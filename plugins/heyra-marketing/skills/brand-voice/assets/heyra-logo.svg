@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 160" width="640" height="160" role="img" aria-label="Heyra">
+  <rect width="640" height="160" rx="16" fill="#10233F"/>
+  <circle cx="92" cy="80" r="42" fill="#F2B233"/>
+  <circle cx="92" cy="80" r="26" fill="#10233F"/>
+  <circle cx="92" cy="80" r="10" fill="#FBF7EF"/>
+  <text x="170" y="98" font-family="Inter, Arial, sans-serif" font-size="64" font-weight="700" fill="#FBF7EF" letter-spacing="8">HEYRA</text>
+  <text x="172" y="128" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="400" fill="#1B7F8E" letter-spacing="6">SPIL MED MÅDE</text>
+</svg>

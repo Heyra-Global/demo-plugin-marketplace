@@ -1,245 +1,178 @@
-# Architecture: marketplace and plugin anatomy
+# Architecture: formats, surfaces and distribution
 
-A reference for the file formats used in this repository, with pointers to
-where each one is demonstrated. The official documentation is at
-https://code.claude.com/docs/en/plugins-reference; this page is the short
-version that matches what the demo contains.
+What the files in this repository are, which Claude and Copilot surfaces
+read them, and how a company distributes them. Written in September 2026
+from the official documentation linked at the end; the products move, so
+verify before you promise a client anything.
 
-## The marketplace
+## One marketplace, four surfaces
 
-```
-.claude-plugin/marketplace.json
-```
+| Surface                    | Reads                                             | Installs from                                           |
+| -------------------------- | ------------------------------------------------- | ------------------------------------------------------- |
+| Claude Chat (web, desktop) | Plugins the admin or the user enabled; skills only | Organisation marketplace; plugins shared or uploaded    |
+| Claude Cowork              | Same plugins; skills, connectors, subagents, hooks | Organisation marketplace; "Add marketplace" by URL; `.plugin` upload |
+| Claude Code                | `.claude-plugin/marketplace.json`                  | `claude plugin marketplace add owner/repo`               |
+| GitHub Copilot CLI, VS Code, cloud agent | `.claude-plugin/marketplace.json` or `.github/plugin/marketplace.json` | `copilot plugin marketplace add`, settings files |
+
+The marketplace file format is shared by Claude Cowork, Claude Code and
+Copilot. This repository keeps two identical copies so every tool finds it
+at its default location; CI fails if they differ.
+
+## The marketplace file
 
 ```json
 {
   "name": "heyra-demo",
   "owner": { "name": "Heyra", "email": "hello@heyra.io" },
-  "metadata": { "description": "...", "version": "1.0.0" },
+  "metadata": { "description": "...", "version": "2.0.0" },
   "plugins": [
-    {
-      "name": "dev-toolkit",
-      "source": "./plugins/dev-toolkit",
-      "description": "...",
-      "version": "1.0.0",
-      "author": { "name": "Heyra", "email": "hello@heyra.io" },
-      "license": "MIT",
-      "keywords": ["git", "commit"],
-      "category": "development"
-    }
+    { "name": "heyra-email", "source": "./plugins/heyra-email", "description": "...", "version": "1.0.0", "category": "productivity" }
   ]
 }
 ```
 
-`source` can also be a GitHub repository (`{"source": "github", "repo":
-"org/repo", "ref": "v1.2.0"}`), a git URL, a subdirectory of a git
-repository, an npm package or a zip archive. This demo keeps every plugin in
-the same repository, which is the simplest way to version them together.
-
-Users add it with `/plugin marketplace add Heyra-Global/demo-cc-marketplace`.
-Teams pin it in `.claude/settings.json`:
-
-```json
-{
-  "extraKnownMarketplaces": {
-    "heyra-demo": { "source": { "source": "github", "repo": "Heyra-Global/demo-cc-marketplace" } }
-  },
-  "enabledPlugins": { "dev-toolkit@heyra-demo": true }
-}
-```
+Rules that matter in practice: plugin names are lowercase words with
+hyphens, at most 64 characters; relative `source` paths are the simplest
+and are supported everywhere; organisation marketplaces in Claude also
+accept `github`, `url` and `git-subdir` sources but not `npm`, `archive` or
+`command`.
 
 ## A plugin
 
 ```
-plugins/<name>/
-├── .claude-plugin/plugin.json   manifest (only this file goes in here)
-├── README.md
-├── skills/<skill>/SKILL.md      skills (+ references/, templates/, scripts/)
-├── agents/<agent>.md            subagents
-├── hooks/hooks.json             hooks (+ the scripts they run)
-├── .mcp.json                    MCP servers
-├── .lsp.json                    language servers
-├── output-styles/<style>.md     output styles
-├── evals/<case>/                eval cases for `claude plugin eval`
-└── scripts/, assets/            anything the components need
+plugins/heyra-email/
+├── .claude-plugin/plugin.json   manifest: name, version, description, author, pointers
+├── README.md                    what it is, what it contains, how to try it
+├── CONNECTORS.md                which ~~categories the skills use and what is pre-configured
+├── .mcp.json                    remote MCP servers (optional)
+├── skills/<name>/SKILL.md       one folder per skill, plus references/ and templates/
+└── agents/<name>.md             subagents (optional; Cowork and Claude Code only)
 ```
 
-`plugin.json` needs only `name`. Everything else is optional metadata plus
-pointers to components that live somewhere other than the default location:
+Only `plugin.json` goes inside `.claude-plugin/`. Everything else sits at
+the plugin root.
 
-```json
-{
-  "name": "fabric-toolkit",
-  "version": "1.0.0",
-  "description": "...",
-  "author": { "name": "Heyra", "email": "hello@heyra.io" },
-  "hooks": "./hooks/hooks.json",
-  "mcpServers": "./.mcp.json",
-  "lspServers": "./.lsp.json",
-  "outputStyles": "./output-styles/",
-  "userConfig": {
-    "workspace_name": { "type": "string", "title": "Fabric workspace", "default": "nordlys-dev" }
-  }
-}
-```
+## Component by surface
 
-When a plugin is installed, its skills are namespaced: `/dev-toolkit:commit`.
+| Component                     | Claude Chat | Claude Cowork | Claude Code | Copilot CLI | VS Code Copilot | Copilot cloud agent |
+| ----------------------------- | :---------: | :-----------: | :---------: | :---------: | :-------------: | :-----------------: |
+| Skills (`skills/*/SKILL.md`)  | yes         | yes, also as slash commands | yes | yes    | yes             | yes                 |
+| Connectors, built-in (M365)   | yes         | yes           | via own MCP | no          | no              | no                  |
+| Remote MCP in `.mcp.json`     | yes         | yes           | yes         | yes         | yes             | not documented      |
+| Local MCP (`command`)         | no          | no            | yes         | yes         | yes             | not documented      |
+| Subagents (`agents/*.md`)     | greyed out  | yes           | yes         | partial     | yes             | partial             |
+| Copilot agents (`com.github.copilot/agents/*.agent.md`) | no | no | no  | yes         | yes             | yes                 |
+| Hooks (`hooks/hooks.json`, PascalCase) | greyed out | yes  | yes         | yes         | yes (matchers ignored) | camelCase `.github/hooks/` only |
+| LSP (`.lsp.json`)             | no          | no            | yes         | legacy      | no              | no                  |
+| Output styles, evals, userConfig | no       | no            | yes         | no          | no              | no                  |
 
-## Component types
+Practical consequences, applied in this repository:
 
-### Skills (`skills/<name>/SKILL.md`)
+- Business plugins carry **skills and connectors** only, plus one subagent
+  in heyra-marketing to show the concept. They behave the same in Chat and
+  Cowork.
+- Business skills are **not** user-only (`disable-model-invocation`). Chat
+  has no slash commands; a user-only skill would be unusable there.
+- `.mcp.json` in business plugins lists **remote HTTPS servers only**. Chat
+  and Cowork reach connectors through Anthropic's cloud.
+- Built-in connectors such as Microsoft 365 are not listed in `.mcp.json`.
+  Skills refer to them by category (`~~email`, `~~calendar`, `~~files`) and
+  `CONNECTORS.md` says what is pre-configured. This is the pattern of
+  Anthropic's own knowledge-work plugins.
+- heyra-dev carries everything a developer tool can use, in both formats.
 
-Markdown with YAML frontmatter. The description is what Claude matches
-against the conversation, so it carries the trigger ("Use when ...").
+## Skills
 
-| Frontmatter                 | Effect                                                      | Demonstrated in                          |
-| --------------------------- | ----------------------------------------------------------- | ---------------------------------------- |
-| `description`               | Auto-invocation trigger and the text in `/skills`           | every skill                              |
-| `disable-model-invocation`  | Only the user can run it (a slash command)                  | `dev-toolkit/commit`                     |
-| `user-invocable: false`     | Only Claude can load it                                     | (not used; reference skills stay both)   |
-| `paths`                     | Auto-loads when Claude touches matching files               | `dbt-toolkit/dbt-conventions`, `fabric-toolkit/fabric-engineer` |
-| `argument-hint`             | Autocomplete hint                                           | most user-invoked skills                 |
-| `arguments`                 | Named arguments as `$name`                                  | `nordlys-brand/campaign-brief`, `dbt-toolkit/dbt-new-model` |
-| `allowed-tools`             | Pre-approved tools for the skill's turn                     | `dev-toolkit/commit`                     |
-| `context: fork` + `agent`   | Runs in a subagent                                          | `*/brand-check`, `fabric-deploy`, `dbt-build-fix`, `review-changes` |
-| `model`, `effort`           | Model and effort override                                   | (documented in the template)             |
+Markdown with YAML frontmatter. The description is the trigger: what the
+skill does, "Use when ...", and routing to sibling skills. Fields honoured
+by every surface: `name`, `description`, `license`, `allowed-tools`.
+Claude Code and VS Code also honour `argument-hint`, `disable-model-invocation`,
+`user-invocable`, `context: fork` with `agent:`. Claude Code additionally
+honours `paths`, `arguments`, `model`, `effort`.
 
-In the body: `$ARGUMENTS`, `$0`/`$1`, `${CLAUDE_SKILL_DIR}`,
-`${CLAUDE_PROJECT_DIR}`, and `` !`command` `` for dynamic context that runs
-at load time (`dev-toolkit/doctor` is a table of them).
+In the body: `$ARGUMENTS`, `${CLAUDE_SKILL_DIR}`, and `` !`command` `` for
+dynamic context (Claude Code). Bundled `references/`, `templates/` and
+`scripts/` are read on demand. Keep `SKILL.md` under 500 lines and the
+description under 1,024 characters.
 
-### Subagents (`agents/<name>.md`)
+Never put a colon followed by a space inside a folded description; YAML
+reads it as a mapping key and the whole frontmatter is dropped at runtime.
+`scripts/check-marketplace.py` catches it.
 
-Markdown with frontmatter; the body is the system prompt.
+## Two manifests for developer plugins
 
-| Frontmatter          | Effect                                              | Demonstrated in                 |
-| -------------------- | --------------------------------------------------- | ------------------------------- |
-| `tools`, `disallowedTools` | Tool allow and deny lists                     | `dev-toolkit/code-reviewer`     |
-| `model`              | `sonnet`, `haiku`, `opus` or a full id              | `dbt-toolkit/sql-reviewer` (haiku) |
-| `effort`, `maxTurns` | Budget                                              | `dev-toolkit/code-reviewer`     |
-| `skills`             | Skills preloaded into the agent's context           | every agent in this repo        |
-| `color`              | Display colour                                      | every agent                     |
-| `background`, `isolation: worktree`, `memory` | Execution options          | (documented in the template)    |
+| File                      | Format                | Readers                                          |
+| ------------------------- | --------------------- | ------------------------------------------------ |
+| `.claude-plugin/plugin.json` | Claude              | Claude Chat, Cowork, Claude Code, Copilot CLI (legacy discovery) |
+| `plugin.json` (root)      | Agent Plugins 1.0     | Copilot CLI, VS Code, Copilot app, other clients (Cursor, Codex, Kiro) |
+| `.mcp.json`               | Claude (`type: http` / `command`) | Claude tools                          |
+| `mcp.json`                | Agent Plugins (`stdio`, `streamable-http`, `sse`) | Agent Plugins clients      |
+| `agents/*.md`             | Claude subagent       | Claude Code, Cowork                              |
+| `com.github.copilot/agents/*.agent.md` | Copilot custom agent | Copilot surfaces                     |
+| `hooks/hooks.json`        | Claude (PascalCase events) | Claude Code; Copilot CLI and VS Code accept it |
 
-Plugin-shipped agents cannot define `hooks`, `mcpServers` or
-`permissionMode`.
+Agent Plugins 1.0 requires `$schema` and `name`; `author` is an object;
+extra fields are not allowed. `${PLUGIN_ROOT}` is the Agent Plugins
+equivalent of `${CLAUDE_PLUGIN_ROOT}`.
 
-### Hooks (`hooks/hooks.json`)
+## Distribution and visibility
 
-```json
-{
-  "hooks": {
-    "PreToolUse": [
-      { "matcher": "Bash", "hooks": [ { "type": "command", "if": "Bash(fab *)", "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/guard-fab.js\"", "timeout": 10 } ] }
-    ],
-    "Stop": [
-      { "hooks": [ { "type": "prompt", "prompt": "...", "model": "claude-haiku-4-5-20251001" } ] }
-    ]
-  }
-}
-```
+| Path                                              | Repository visibility            | Who acts            |
+| ------------------------------------------------- | -------------------------------- | ------------------- |
+| Claude organisation marketplace (GitHub sync)     | private or internal, GitHub App installed | Owner / Primary Owner |
+| Claude organisation marketplace (zip upload)      | any (zip ≤ 50 MB, ≤ 100 plugins) | Owner / Primary Owner |
+| Cowork "Add marketplace" by URL                   | public works; private not documented | any user         |
+| Cowork "Upload a file" (`.plugin` zip)            | any                              | any user            |
+| Peer sharing (Customize > Plugins > Share)        | n/a                              | member, if the admin allowed sharing |
+| Claude Code `claude plugin marketplace add`       | any the user's git can reach     | developer           |
+| Copilot CLI `copilot plugin marketplace add`      | any the user's git can reach     | developer           |
+| Copilot `.github/copilot/settings.json`           | any                              | repository owner    |
+| Copilot managed settings (`.github-private/copilot/managed-settings.json`) | any | Copilot admin |
 
-Events used here: `SessionStart` (matchers `startup|resume|clear|compact`),
-`PreToolUse`, `PostToolUse` (matchers are tool names, regex allowed), `Stop`.
-Others exist: `UserPromptSubmit`, `Notification`, `SubagentStop`,
-`PreCompact`, `SessionEnd` and more.
+Organisation-managed plugins appear in Chat and Cowork; members cannot
+edit them. Install states: Installed by default, Available for install,
+Required, Not available; Enterprise groups can override per group. Sync
+runs when a pull request with a version bump merges to the default branch,
+if auto-update is on. Enterprise security scanning checks uploaded plugins.
 
-Hook types: `command` (a program; JSON in on stdin, JSON out on stdout),
-`prompt` (a model answers `{"ok": true|false, "reason"}`), `agent` (a
-subagent with tools verifies something).
+Limits (Cowork): 200 MB uncompressed per plugin, 5,000 files, 512 MB
+repository archive, 500 plugins per marketplace, 25 marketplaces per user.
 
-Output contract for command hooks:
+## Versioning
 
-| Event        | To block or steer                                                                                     |
-| ------------ | ----------------------------------------------------------------------------------------------------- |
-| PreToolUse   | `{"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny"\|"ask"\|"allow", "permissionDecisionReason": "..."}}` |
-| PostToolUse  | `{"hookSpecificOutput": {"hookEventName": "PostToolUse", "additionalContext": "..."}}` (or `decision: "block"` + `reason`) |
-| SessionStart | `{"hookSpecificOutput": {"hookEventName": "SessionStart", "additionalContext": "..."}}`                |
-| Stop         | `{"decision": "block", "reason": "..."}`                                                             |
-
-Exit 0 with no output means "nothing to add". Exit 2 with text on stderr
-blocks. `${CLAUDE_PLUGIN_ROOT}` resolves to the installed plugin folder;
-quote it. `userConfig` values arrive as `CLAUDE_PLUGIN_OPTION_<KEY>`.
-
-Demonstrated: Node hooks in three plugins, bash hooks and a prompt hook in
-`dev-toolkit`. All of them are exercised by `scripts/test-hooks.js`.
-
-### MCP servers (`.mcp.json`)
-
-```json
-{
-  "mcpServers": {
-    "brand-assets": { "command": "node", "args": ["${CLAUDE_PLUGIN_ROOT}/mcp/brand-assets-server.js"] },
-    "fabric-core":  { "type": "http", "url": "https://api.fabric.microsoft.com/v1/mcp/core", "headersHelper": "${CLAUDE_PLUGIN_ROOT}/scripts/mcp_auth_header.sh" },
-    "dbt":          { "command": "uvx", "args": ["dbt-mcp"], "env": { "DBT_PROJECT_DIR": "${CLAUDE_PROJECT_DIR}", "DBT_PATH": "${user_config.dbt_path}" } },
-    "context7":     { "type": "http", "url": "https://mcp.context7.com/mcp", "headers": { "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY:-}" } }
-  }
-}
-```
-
-Four shapes: bundled stdio (nordlys-brand), HTTP with a token helper
-(fabric-toolkit), stdio through a package runner with `userConfig`
-(dbt-toolkit), HTTP with an optional API key from the environment
-(dev-toolkit). Tools appear to Claude as `mcp__plugin_<plugin>_<server>__<tool>`.
-
-### LSP servers (`.lsp.json`)
-
-```json
-{ "python": { "command": "pyright-langserver", "args": ["--stdio"], "extensionToLanguage": { ".py": "python" } } }
-```
-
-Claude gets diagnostics after every edit. The binary is a prerequisite the
-user installs. Demonstrated in `dev-toolkit`.
-
-### Output styles (`output-styles/<name>.md`)
-
-Frontmatter `name`, `description`, `force-for-plugin`,
-`keep-coding-instructions`; the body is appended to the system prompt while
-the style is active. Demonstrated in `nordlys-brand`.
-
-### userConfig (in `plugin.json`)
-
-Typed settings Claude Code asks for when the plugin is enabled. Referenced
-as `${user_config.<key>}` in `.mcp.json`, `.lsp.json` and `hooks.json`, and
-exported as `CLAUDE_PLUGIN_OPTION_<KEY>` to scripts. Demonstrated in
-`fabric-toolkit` (workspace names used by the guard hook) and `dbt-toolkit`
-(dbt path used by the MCP server).
-
-### Evals (`evals/<case>/`)
-
-```
-evals/linkedin-post-no-hype/
-├── prompt.md          frontmatter: runs, max_turns, allowed_tools; body: the prompt
-└── graders/
-    ├── no-banned-words.md   type: regex
-    ├── skill-fired.md       type: tool_used, arm: with-only
-    └── tone.md              type: llm
-```
-
-`claude plugin eval plugins/nordlys-brand` runs each case with and without
-the plugin and reports the score delta. Demonstrated in `nordlys-brand`.
-
-## Install scopes and distribution
-
-| Scope   | Written to                    | Use for                                  |
-| ------- | ----------------------------- | ---------------------------------------- |
-| user    | `~/.claude/settings.json`     | Personal tools, present in every project |
-| project | `.claude/settings.json`       | Team tools, committed with the repo      |
-| local   | `.claude/settings.local.json` | Personal overrides in one project        |
-
-`claude plugin install <name>@heyra-demo --scope project` and
-`/dev-toolkit:setup` do this for you.
+Every plugin change bumps `version` in the plugin's manifest(s) and in
+both marketplace files. CI enforces the bump on pull requests. The
+organisation marketplace's auto-update watches for exactly that bump.
 
 ## CLI cheat sheet
 
 ```bash
-claude plugin marketplace add Heyra-Global/demo-cc-marketplace
-claude plugin install dev-toolkit@heyra-demo --scope user
-claude plugin list
-claude plugin details dev-toolkit@heyra-demo     # component inventory and token cost
-claude plugin validate .                          # marketplace
-claude plugin validate plugins/dev-toolkit        # one plugin, --strict for CI
-claude --plugin-dir ./plugins/dev-toolkit         # try without installing
-claude plugin eval plugins/nordlys-brand --runs 1
-claude plugin tag plugins/dev-toolkit --dry-run   # release tag name--vX.Y.Z
+# Claude Code
+claude plugin marketplace add Heyra-Global/demo-plugin-marketplace
+claude plugin install heyra-email@heyra-demo --scope user
+claude plugin validate --strict plugins/heyra-email
+claude --plugin-dir ./plugins/heyra-email
+
+# GitHub Copilot CLI
+copilot plugin marketplace add Heyra-Global/demo-plugin-marketplace
+copilot plugin install heyra-dev@heyra-demo
+copilot plugin list
+
+# This repository
+bash scripts/validate-all.sh
+python scripts/package-plugins.py        # dist/<name>.plugin for manual upload
 ```
+
+## Sources
+
+- Use plugins in Claude (Help Center): https://support.claude.com/en/articles/13837440-use-plugins-in-claude
+- Manage plugins for your organization: https://support.claude.com/en/articles/13837433-manage-plugins-for-your-organization
+- Cowork plugins guide: https://claude.com/docs/cowork/guide/plugins
+- Knowledge-work plugins (Anthropic): https://github.com/anthropics/knowledge-work-plugins
+- Claude Code plugins reference: https://code.claude.com/docs/en/plugins-reference
+- Plugin marketplaces (Claude Code): https://code.claude.com/docs/en/plugin-marketplaces
+- Copilot CLI plugins: https://docs.github.com/en/copilot/concepts/agents/copilot-cli/about-cli-plugins
+- Copilot CLI plugin reference: https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-plugin-reference
+- VS Code agent plugins: https://code.visualstudio.com/docs/agent-customization/agent-plugins
+- Agent Plugins 1.0: https://agent-plugins.org/specification
+- Agent Skills: https://agentskills.io/specification

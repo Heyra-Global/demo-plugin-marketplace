@@ -45,16 +45,16 @@ jobs:
 
       - name: JSON syntax
         run: |
-          for f in .claude-plugin/marketplace.json .claude/settings.json plugins/*/.claude-plugin/plugin.json plugins/*/hooks/hooks.json plugins/*/.mcp.json plugins/*/.lsp.json; do
+          for f in .claude-plugin/marketplace.json .github/plugin/marketplace.json .claude/settings.json .github/copilot/settings.json plugins/*/.claude-plugin/plugin.json plugins/*/plugin.json plugins/*/hooks/hooks.json plugins/*/.mcp.json plugins/*/mcp.json plugins/*/.lsp.json; do
             [ -f "$f" ] || continue
             jq -e . "$f" >/dev/null && echo "ok  $f"
           done
 
-      - name: Script syntax (node --check, bash -n)
+      - name: Script syntax
         run: |
-          for f in plugins/*/hooks/*.js plugins/*/mcp/*.js scripts/*.js; do node --check "$f"; done
-          for f in plugins/*/hooks/*.sh plugins/*/scripts/*.sh scripts/*.sh; do bash -n "$f"; done
-          python -m py_compile plugins/*/scripts/*.py scripts/*.py
+          for f in plugins/*/hooks/*.js scripts/*.js; do node --check "$f"; done
+          for f in plugins/*/hooks/*.sh scripts/*.sh; do bash -n "$f"; done
+          python -m py_compile scripts/*.py
 
       - name: House rules (scripts/check-marketplace.py)
         run: python scripts/check-marketplace.py
@@ -62,16 +62,23 @@ jobs:
       - name: Hook smoke tests
         run: node scripts/test-hooks.js
 
-      - name: Bundled MCP server smoke test
-        run: node plugins/nordlys-brand/mcp/smoke-test.js
-
       - name: Install Claude Code CLI
         run: |
           curl -fsSL https://claude.ai/install.sh | bash
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
-      - name: claude plugin validate (marketplace and every plugin)
+      - name: claude plugin validate (marketplace and every plugin, strict)
         run: |
           claude --version
-          claude plugin validate .
-          for p in plugins/*/; do claude plugin validate "$p"; done
+          claude plugin validate --strict .
+          for p in plugins/*/; do claude plugin validate --strict "$p"; done
+
+      - name: Package plugins for manual upload
+        run: python scripts/package-plugins.py
+
+      - name: Upload packaged plugins
+        uses: actions/upload-artifact@v4
+        with:
+          name: plugins-${{ github.sha }}
+          path: dist/*.plugin
+          retention-days: 30

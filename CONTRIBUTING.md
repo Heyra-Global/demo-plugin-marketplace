@@ -1,8 +1,8 @@
 # Contributing
 
 This repository is a demo. Contributions that make the demo clearer are
-welcome: a component type that is not shown yet, a sharper example, a bug in
-a hook.
+welcome: a workflow a client team recognises, a sharper Danish example, a
+surface not yet shown.
 
 ## Add a plugin
 
@@ -13,66 +13,61 @@ a hook.
    ```
 
 2. Edit `plugins/<name>/.claude-plugin/plugin.json`: name (lowercase
-   kebab-case, equal to the folder name), version `1.0.0`, a specific
-   description, author, keywords. Remove the `hooks` and `mcpServers` keys if
-   you delete those components.
-3. Write the components you need and delete the rest. A plugin with one
-   skill is fine.
-4. Register it in `.claude-plugin/marketplace.json`:
+   words with hyphens, equal to the folder name, max 64 characters),
+   version `1.0.0`, a description that says what it does and where it
+   works, author, keywords. Remove the `mcpServers` key if you delete
+   `.mcp.json`.
+3. Write the skills. One reference skill Claude loads on its own (the
+   house rules), then task skills. Keep `CONNECTORS.md` accurate.
+4. Register it in **both** marketplace files. Edit
+   `.claude-plugin/marketplace.json`, then copy:
 
-   ```json
-   {
-     "name": "<name>",
-     "source": "./plugins/<name>",
-     "description": "<same text as plugin.json>",
-     "version": "1.0.0",
-     "author": { "name": "Heyra", "email": "hello@heyra.io" },
-     "license": "MIT",
-     "keywords": ["..."],
-     "category": "marketing | data-engineering | development | productivity"
-   }
+   ```bash
+   cp .claude-plugin/marketplace.json .github/plugin/marketplace.json
    ```
 
 5. Write `plugins/<name>/README.md` with a component table and a "Try it"
-   section, and add a row to the component matrix in the root README.
-6. Test locally without installing:
-
-   ```bash
-   claude --plugin-dir ./plugins/<name>
-   ```
-
+   section, and add the plugin to the tables in the root README.
+6. Keep it consistent with the fictional company in `docs/HEYRA.md`.
 7. Run `bash scripts/validate-all.sh`. Fix everything it reports.
 8. Open a pull request. The template has the checklist.
 
+## Business plugin or developer plugin
+
+| Rule                                        | Business (Chat, Cowork)                 | Developer (Claude Code, Copilot)       |
+| ------------------------------------------- | --------------------------------------- | -------------------------------------- |
+| Skills                                      | model-invocable; no `disable-model-invocation` | any frontmatter                 |
+| Connectors                                  | built-in by category; remote HTTPS MCP only | local or remote MCP               |
+| Subagents                                   | at most one, as an example              | as needed                              |
+| Hooks                                       | none                                    | allowed; add a case to `scripts/test-hooks.js` |
+| Manifests                                   | `.claude-plugin/plugin.json`            | plus `plugin.json` (Agent Plugins 1.0), `mcp.json`, `com.github.copilot/agents/` |
+| Language                                    | English instructions, Danish examples   | English                                |
+
+`scripts/check-marketplace.py` enforces the business-plugin rules for every
+plugin whose marketplace category is not `development`.
+
 ## Change a plugin
 
-Bump the version in both `plugin.json` and `marketplace.json`. Semver: MAJOR
-for a change that alters how a skill or hook behaves for existing users,
-MINOR for a new component, PATCH for fixes and wording.
+Bump the version in the plugin manifest(s) and in both marketplace files.
+Semver: MAJOR when a skill's behaviour changes for existing users, MINOR
+for a new skill or component, PATCH for fixes and wording.
 
-## Conventions worth knowing
+## Conventions
 
-- **Skill descriptions** are the trigger. Say what the skill does, then "Use
-  when ...", then route to sibling skills. Under 1024 characters.
+- **Skill descriptions** are the trigger. What it does, then "Use when
+  ...", then routing to sibling skills. Under 1,024 characters.
 - **No `: ` inside folded frontmatter values.** YAML turns it into a key and
-  Claude Code drops the frontmatter silently.
-- **Hooks print JSON or nothing.** Exit 0. Never print debug text to stdout;
-  use stderr.
-- **`${CLAUDE_PLUGIN_ROOT}`** for every path in `hooks.json` and `.mcp.json`;
-  quote it. **`${CLAUDE_SKILL_DIR}`** inside skills.
-- **userConfig** values reach scripts as `CLAUDE_PLUGIN_OPTION_<KEY>` and
-  config files as `${user_config.<key>}`.
-- **Evals** live in `plugins/<name>/evals/<case>/prompt.md` with
-  `graders/*.md`. Prefer deterministic graders (regex, tool_used) and add one
-  LLM grader for tone or judgement. Results go to `evals/results/`, which is
-  git-ignored.
+  the frontmatter is dropped silently.
+- **Answer in the user's language.** Say so in every skill.
+- **Skills never send, delete or invent.** They draft, list and ask.
+- **No player data in outputs.** Case numbers, never names or amounts.
+- **Nothing real.** No real operators, products, slogans or people.
 
-## Testing hooks
-
-Every hook is a program. Feed it an event:
+## Packaging for manual upload
 
 ```bash
-echo '{"tool_input":{"command":"git push --force origin main"}}' | bash plugins/dev-toolkit/hooks/guard-destructive.sh
+python scripts/package-plugins.py            # dist/*.plugin
+python scripts/package-plugins.py heyra-email
 ```
 
-Add a line to `scripts/test-hooks.js` for each new hook. CI runs the file.
+CI attaches the same files to every run.

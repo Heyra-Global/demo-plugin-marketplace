@@ -2,47 +2,47 @@
 name: example-skill
 description:
   What this skill does, in one sentence. Then the trigger - Use when the user
-  asks for X, mentions Y, or works on Z files. In a multi-skill plugin, end
-  with routing to siblings - for A see other-skill. Never put a colon followed
-  by a space inside this text; YAML would read it as a key.
-argument-hint: "[what the user may pass]"
+  asks for X, mentions Y, or wants Z. In a multi-skill plugin, end with
+  routing to siblings, for A see other-skill. Never put a colon followed by
+  a space inside this text; YAML would read it as a key.
+argument-hint: "<what the user may pass>"
 ---
 
 # Example skill
 
-Everything below the frontmatter is the instruction Claude follows. Write it
-for a capable colleague: short steps, hard rules, an output format.
+Everything below the frontmatter is the instruction Claude follows. Write
+it for a capable colleague: short steps, hard rules, an output format.
+Answer in the language the user writes in.
 
-User input: `$ARGUMENTS`
-
-## Optional frontmatter you may add
-
-| Field                        | Effect                                                            |
-| ---------------------------- | ----------------------------------------------------------------- |
-| `disable-model-invocation: true` | Only the user can start it (a "command")                      |
-| `user-invocable: false`      | Only Claude can start it (a pure reference skill)                 |
-| `paths: ["src/**"]`          | Loads automatically when Claude touches matching files            |
-| `arguments: [a, b]`          | Named arguments available as `$a` and `$b`                        |
-| `allowed-tools: Bash(git status:*)` | Pre-approve tools for this skill's turn                    |
-| `context: fork` + `agent: name` | Run in a subagent defined in `agents/name.md`                  |
-| `model: haiku`               | Run on a cheaper model                                            |
-
-## Dynamic context
-
-Inline commands run when the skill loads and their output replaces the
-placeholder: current branch: !`git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "not a git repo"`
-
-## Bundled files
-
-Reference files next to this SKILL.md with relative links, for example
-[`references/details.md`](references/details.md), and tell Claude when to
-read them. `${CLAUDE_SKILL_DIR}` resolves to this directory.
+Input: `$ARGUMENTS`
 
 ## Steps
 
-1. ...
-2. ...
+1. Load `<reference-skill>` if it is not in context (house rules live in a
+   reference skill that Claude loads on its own).
+2. Get the facts. With ~~email or ~~files connected, read them; otherwise
+   ask the user to paste. Ask at most one question.
+3. Do the work with the template in [`templates/output.md`](templates/output.md).
+4. Deliver in this shape:
 
-## Output
+```markdown
+## <Result>
+<the deliverable, ready to use>
 
-State the exact shape of the answer.
+## Notes
+- facts used and their sources
+- next step
+```
+
+## Rules
+
+- What the skill never does (send, delete, invent numbers).
+- Data rules (no personal data in outputs).
+
+## Frontmatter notes
+
+- Business plugins: do **not** set `disable-model-invocation: true`. Claude
+  Chat has no slash commands; a user-only skill cannot be used there. In
+  Cowork the skill still appears as a slash command.
+- Developer plugins may use `disable-model-invocation`, `allowed-tools`,
+  `context: fork` with `agent:`, and `paths`. See `plugins/heyra-dev`.

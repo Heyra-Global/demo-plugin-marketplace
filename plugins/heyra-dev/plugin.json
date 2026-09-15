@@ -1,0 +1,11 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "heyra-dev",
+  "version": "1.0.0",
+  "description": "Developer plugin for Heyra engineers, installable in Claude Code, GitHub Copilot CLI, VS Code and the Copilot cloud agent. /commit, /pr-description, /review-changes, /doctor and /setup skills, TDD guidance, code-reviewer and test-writer subagents (Claude and Copilot formats), guard-rail hooks, Python and TypeScript language servers, and Context7 plus Playwright MCP servers. Ships both the Claude plugin manifest and the Agent Plugins 1.0 manifest.",
+  "author": { "name": "Heyra", "email": "hello@heyra.io" },
+  "homepage": "https://github.com/Heyra-Global/demo-plugin-marketplace/tree/main/plugins/heyra-dev",
+  "repository": "https://github.com/Heyra-Global/demo-plugin-marketplace",
+  "license": "MIT",
+  "keywords": ["developers", "git", "commit", "pull-request", "code-review", "tdd", "copilot", "agent-plugins", "lsp", "mcp", "hooks"]
+}

@@ -17,3 +17,6 @@ Thumbs.db
 
 # Local Claude Code overrides
 .claude/settings.local.json
+
+# Packaged plugins for manual upload (scripts/package-plugins.py)
+dist/

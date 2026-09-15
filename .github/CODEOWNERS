@@ -8,8 +8,11 @@
 /scripts/            @Alexandria-Research
 /.claude-plugin/     @Alexandria-Research
 /templates/          @Alexandria-Research
+/docs/               @Alexandria-Research
 
-/plugins/nordlys-brand/    @Alexandria-Research
-/plugins/fabric-toolkit/   @Alexandria-Research
-/plugins/dbt-toolkit/      @Alexandria-Research
-/plugins/dev-toolkit/      @Alexandria-Research
+/plugins/heyra-marketing/     @Alexandria-Research
+/plugins/heyra-email/         @Alexandria-Research
+/plugins/heyra-meetings/      @Alexandria-Research
+/plugins/heyra-sales/         @Alexandria-Research
+/plugins/heyra-back-office/   @Alexandria-Research
+/plugins/heyra-dev/           @Alexandria-Research

@@ -1,0 +1,10 @@
+{
+  "name": "heyra-email",
+  "version": "1.0.0",
+  "description": "Email handling for Heyra employees in their own Outlook inbox - triage by urgency and action, replies drafted in your voice, thread summaries and a list of open follow-ups. Knows the house email style, GDPR rules for player data, and which mails to redirect (players, self-exclusion requests, press, retailers). Works in Claude Chat and Cowork with the Microsoft 365 connector, or with pasted text.",
+  "author": { "name": "Heyra", "email": "hello@heyra.io" },
+  "homepage": "https://github.com/Heyra-Global/demo-plugin-marketplace/tree/main/plugins/heyra-email",
+  "repository": "https://github.com/Heyra-Global/demo-plugin-marketplace",
+  "license": "MIT",
+  "keywords": ["email", "outlook", "triage", "inbox", "replies", "follow-up", "microsoft-365", "productivity"]
+}

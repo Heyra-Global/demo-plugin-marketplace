@@ -1,8 +1,0 @@
-{
-  "mcpServers": {
-    "brand-assets": {
-      "command": "node",
-      "args": ["${CLAUDE_PLUGIN_ROOT}/mcp/brand-assets-server.js"]
-    }
-  }
-}

@@ -1,0 +1,11 @@
+{
+  "name": "heyra-back-office",
+  "version": "1.0.0",
+  "description": "Finance, HR and legal admin for Heyra in one plugin - invoice checks with approval routing, the travel and expense policy, job descriptions and onboarding plans with the mandatory trainings, policy lookup from the employee handbook, contract summaries with red flags, and GDPR data-subject requests with deadlines and retention rules. Works in Claude Chat and Cowork with Microsoft 365 and Jira or Confluence.",
+  "author": { "name": "Heyra", "email": "hello@heyra.io" },
+  "homepage": "https://github.com/Heyra-Global/demo-plugin-marketplace/tree/main/plugins/heyra-back-office",
+  "repository": "https://github.com/Heyra-Global/demo-plugin-marketplace",
+  "license": "MIT",
+  "keywords": ["finance", "invoices", "expenses", "hr", "onboarding", "job-description", "legal", "contracts", "gdpr", "operations"],
+  "mcpServers": "./.mcp.json"
+}

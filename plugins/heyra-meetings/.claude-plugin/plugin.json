@@ -1,0 +1,11 @@
+{
+  "name": "heyra-meetings",
+  "version": "1.0.0",
+  "description": "Meetings at Heyra - a one-page prep from calendar, mail and last minutes; minutes with decisions and actions from notes or a transcript; an action tracker with reminders; and a weekly status report. Follows the Heyra minutes standard and keeps player data out of documents. Works in Claude Chat and Cowork with Microsoft 365, optionally with a transcription service.",
+  "author": { "name": "Heyra", "email": "hello@heyra.io" },
+  "homepage": "https://github.com/Heyra-Global/demo-plugin-marketplace/tree/main/plugins/heyra-meetings",
+  "repository": "https://github.com/Heyra-Global/demo-plugin-marketplace",
+  "license": "MIT",
+  "keywords": ["meetings", "minutes", "actions", "status-report", "teams", "microsoft-365", "productivity"],
+  "mcpServers": "./.mcp.json"
+}

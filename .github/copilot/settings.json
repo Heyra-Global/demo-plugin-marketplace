@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "heyra-demo": {
+      "source": {
+        "source": "github",
+        "repo": "Heyra-Global/demo-plugin-marketplace"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "heyra-dev@heyra-demo": true
+  }
+}

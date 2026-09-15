@@ -5,35 +5,33 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
+PY=python3
+command -v python3 >/dev/null 2>&1 || PY=python
+
 echo "== JSON syntax"
-for f in .claude-plugin/marketplace.json .claude/settings.json plugins/*/.claude-plugin/plugin.json plugins/*/hooks/hooks.json plugins/*/.mcp.json plugins/*/.lsp.json; do
+for f in .claude-plugin/marketplace.json .github/plugin/marketplace.json .claude/settings.json .github/copilot/settings.json plugins/*/.claude-plugin/plugin.json plugins/*/plugin.json plugins/*/hooks/hooks.json plugins/*/.mcp.json plugins/*/mcp.json plugins/*/.lsp.json; do
   [ -f "$f" ] || continue
   node -e "JSON.parse(require('fs').readFileSync('$f','utf8'))" && echo "  ok  $f"
 done
 
-echo "== Node hook and MCP scripts (syntax)"
-for f in plugins/*/hooks/*.js plugins/*/mcp/*.js; do
-  node --check "$f" && echo "  ok  $f"
-done
-
-echo "== Shell hook scripts (syntax)"
-for f in plugins/*/hooks/*.sh plugins/*/scripts/*.sh; do
-  bash -n "$f" && echo "  ok  $f"
-done
+echo "== Script syntax"
+for f in plugins/*/hooks/*.js scripts/*.js; do node --check "$f" && echo "  ok  $f"; done
+for f in plugins/*/hooks/*.sh scripts/*.sh; do bash -n "$f" && echo "  ok  $f"; done
+$PY -m py_compile scripts/*.py && echo "  ok  scripts/*.py"
 
 echo "== House rules"
-python3 scripts/check-marketplace.py 2>/dev/null || python scripts/check-marketplace.py
+$PY scripts/check-marketplace.py
 
 echo "== Hook smoke tests"
 node scripts/test-hooks.js
 
-echo "== Bundled MCP server smoke test"
-node plugins/nordlys-brand/mcp/smoke-test.js
+echo "== Package plugins (dist/)"
+$PY scripts/package-plugins.py
 
 echo "== claude plugin validate"
-claude plugin validate .
+claude plugin validate --strict .
 for p in plugins/*/; do
-  claude plugin validate "$p"
+  claude plugin validate --strict "$p"
 done
 
 echo

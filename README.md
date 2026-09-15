@@ -1,128 +1,147 @@
-# heyra-demo: a Claude Code plugin marketplace
+# Heyra demo plugin marketplace
 
-A demo marketplace by [Heyra](https://heyra.io) that shows what a Claude Code
-plugin marketplace can contain. Four realistic plugins, one fictional client
-brand, and every plugin component type in use: skills, subagents, hooks, MCP
-servers, LSP servers, output styles, user configuration and evals.
+A demo plugin marketplace by [Heyra](https://heyra.io) for companies that
+use **Claude Chat** and **Claude Cowork** on a Claude Enterprise or Team
+plan, and **GitHub Copilot** for their developers. Five plugins for
+non-developers, one for developers, all about one fictional company, all
+installable from this repository.
 
-> **Demo content.** "Nordlys Analytics" is an invented company. Nothing in
-> this repository is client data. The structure is real; the brand is not.
+> **Demo content.** "Heyra" is used here as the name of an invented Danish
+> betting and gaming operator. Its products, people, policies, numbers and
+> brand are fiction. The Danish gambling-marketing rules referenced in the
+> marketing plugin are real and summarised for the demo; they are not legal
+> advice.
 
 ## What a marketplace is
 
-A marketplace is a git repository with one file, `.claude-plugin/marketplace.json`,
-that lists plugins. A plugin is a folder with a `.claude-plugin/plugin.json`
-manifest and any of the components below. Users add the marketplace once and
-install plugins from it. Teams pin it in `.claude/settings.json` so everyone
-gets the same plugins.
-
-## Quick start
-
-```text
-/plugin marketplace add Heyra-Global/demo-cc-marketplace
-/plugin install dev-toolkit@heyra-demo
-/plugin install nordlys-brand@heyra-demo
-```
-
-Or, non-interactively:
-
-```bash
-claude plugin marketplace add Heyra-Global/demo-cc-marketplace
-claude plugin install dev-toolkit@heyra-demo --scope user
-```
-
-Then open any repository and run `/dev-toolkit:setup`. It detects the stack
-and installs the matching plugins at project scope.
-
-This repository is private. Users need GitHub access to the `Heyra-Global`
-organisation and a working `gh auth login` or git credentials.
+A marketplace is a git repository with one file,
+`.claude-plugin/marketplace.json`, that lists plugins. A plugin is a folder
+with a `.claude-plugin/plugin.json` manifest, `skills/` and optionally
+connectors and subagents. A Claude admin adds the marketplace once in the
+organisation settings; every employee then sees the plugins in Claude Chat
+and Claude Cowork. Developers add the same repository in Claude Code or
+GitHub Copilot.
 
 ## The plugins
 
-| Plugin                                     | Category         | One line                                                                                  |
-| ------------------------------------------ | ---------------- | ----------------------------------------------------------------------------------------- |
-| [nordlys-brand](plugins/nordlys-brand/)    | marketing        | Brand voice and palette for a fictional client, with a bundled MCP server and an eval suite |
-| [fabric-toolkit](plugins/fabric-toolkit/)  | data-engineering | Microsoft Fabric design, notebook templates, fab CLI, guarded deployment, Fabric MCP        |
-| [dbt-toolkit](plugins/dbt-toolkit/)        | data-engineering | dbt conventions, scaffolding, coverage report, build-and-fix loop, dbt MCP                |
-| [dev-toolkit](plugins/dev-toolkit/)        | development      | Commit, PR, review, doctor and setup skills, guard rails, LSP and docs MCP servers         |
+| Plugin                                           | For                        | What it does                                                                           | Chat | Cowork | Claude Code | Copilot |
+| ------------------------------------------------ | -------------------------- | -------------------------------------------------------------------------------------- | :--: | :----: | :---------: | :-----: |
+| [heyra-marketing](plugins/heyra-marketing/)      | Marketing, communications  | Brand voice, campaign brief, social post, press release, Danish gambling-ad compliance check | yes | yes | yes |    |
+| [heyra-email](plugins/heyra-email/)              | Everyone with an inbox     | Inbox triage, replies in your voice, thread summary, follow-ups. Outlook               | yes  | yes    | yes         |         |
+| [heyra-meetings](plugins/heyra-meetings/)        | Managers, project leads    | Meeting prep, minutes, action tracker, weekly status                                    | yes  | yes    | yes         |         |
+| [heyra-sales](plugins/heyra-sales/)              | Partner and retail sales   | Account research, offers, follow-up mail, pipeline review                                | yes  | yes    | yes         |         |
+| [heyra-back-office](plugins/heyra-back-office/)  | Finance, HR, legal         | Invoice check, expense policy, job description, onboarding, handbook, contracts, GDPR   | yes  | yes    | yes         |         |
+| [heyra-dev](plugins/heyra-dev/)                  | Developers                 | Commit, PR, review, doctor, setup, guard hooks, LSP, docs MCP. Two manifest formats     |      |        | yes         | yes     |
 
-## Component matrix
+Skills work in every Claude surface. The one subagent (in heyra-marketing)
+runs in Cowork and Claude Code; Claude Chat shows it greyed out. Hooks exist
+only in heyra-dev.
 
-Where each component type is demonstrated. Click through to the plugin
-READMEs for the file-level map.
+## Install
 
-| Component                              | nordlys-brand | fabric-toolkit | dbt-toolkit | dev-toolkit |
-| -------------------------------------- | :-----------: | :------------: | :---------: | :---------: |
-| Skill, loaded by Claude on its own     | yes           | yes            | yes         | yes         |
-| Skill, user-only (slash command)       | yes           | yes            | yes         | yes         |
-| Skill, auto-loads on file `paths`      |               | yes            | yes         |             |
-| Skill with named `arguments`           | yes           |                | yes         |             |
-| Skill with `allowed-tools`             |               |                |             | yes         |
-| Skill with dynamic context `` !`cmd` `` |              | yes            | yes         | yes         |
-| Skill forked into a subagent           | yes           | yes            | yes         | yes         |
-| Skill with `references/` or templates  | yes           | yes            | yes         |             |
-| Subagent, read-only                    | yes           | yes            | yes         | yes         |
-| Subagent that edits and runs commands  |               | yes            | yes         | yes         |
-| Subagent preloading a skill (`skills:`)| yes           | yes            | yes         | yes         |
-| Hook: SessionStart                     | yes           | yes            | conditional | matcher     |
-| Hook: PreToolUse (deny / ask)          |               | with `if`      | yes         | bash        |
-| Hook: PostToolUse (warn)               | yes           | yes            | yes         | format      |
-| Hook: Stop, `type: prompt`             |               |                |             | yes         |
-| Hook script language                   | Node          | Node           | Node        | bash + Node |
-| MCP server, bundled in the plugin      | yes           |                |             |             |
-| MCP server, public over HTTP           |               | yes (auth helper) |          | yes         |
-| MCP server, public over stdio          |               |                | uvx         | npx         |
-| LSP servers                            |               |                |             | yes         |
-| Output style                           | yes           |                |             |             |
-| `userConfig` (asked at install)        |               | yes            | yes         |             |
-| Eval suite (`claude plugin eval`)      | yes           |                |             |             |
-| Bundled helper scripts                 | Node          | Python + bash  | Python      |             |
+### Claude Enterprise or Team admin (everyone gets the plugins)
+
+Requirements: Cowork and Skills enabled for the organisation, and an Owner
+or Primary Owner role.
+
+1. Organization settings > **Plugins** > **Add plugins** > **GitHub**.
+2. Enter `Heyra-Global/demo-plugin-marketplace`. The repository must be
+   **private or internal** for an organisation marketplace; fork this one
+   into your organisation if it is public at the time.
+3. Set each plugin to *Installed by default*, *Available for install*,
+   *Required* or *Not available*. Enterprise groups can get different
+   settings.
+4. Members see the plugins under **Customize > Plugins** in Chat and Cowork
+   at their next session.
+
+Alternative without GitHub: **Add plugins > Upload a file** with the
+`.plugin` zips from `dist/` (built by `python scripts/package-plugins.py`,
+also attached to every CI run).
+
+### Claude Cowork, one user
+
+**Plugins** > **Add marketplace** > `Heyra-Global/demo-plugin-marketplace`.
+This path works with a public repository. For a private one, upload the
+`.plugin` file from `dist/` instead. Turn on the Microsoft 365 connector
+under **Customize > Connectors** to let the email and meeting skills read
+your mail and calendar.
+
+### Claude Code
+
+```bash
+claude plugin marketplace add Heyra-Global/demo-plugin-marketplace
+claude plugin install heyra-dev@heyra-demo --scope user
+claude plugin install heyra-email@heyra-demo --scope user
+```
+
+### GitHub Copilot
+
+```bash
+copilot plugin marketplace add Heyra-Global/demo-plugin-marketplace
+copilot plugin install heyra-dev@heyra-demo
+```
+
+VS Code: add the repository to the `chat.plugins.marketplaces` setting.
+Copilot cloud agent and teams: commit `.github/copilot/settings.json` (this
+repository has one). Copilot Business and Enterprise: `copilot/managed-settings.json`
+in the organisation's `.github-private` repository.
+
+## What a plugin contains
+
+| Component                              | heyra-marketing | heyra-email | heyra-meetings | heyra-sales | heyra-back-office | heyra-dev |
+| -------------------------------------- | :-------------: | :---------: | :------------: | :---------: | :---------------: | :-------: |
+| Reference skill Claude loads on its own | brand-voice    | email-style | minutes-format | partner-playbook | expense-policy | tdd     |
+| Task skills (slash commands in Cowork) | 4               | 4           | 4              | 4           | 6                 | 5         |
+| Bundled templates and references       | yes             | yes         |                | yes         | yes               |           |
+| Danish examples                        | yes             | yes         | yes            | yes         | yes               |           |
+| Connectors (`CONNECTORS.md`)           | M365, Teams, Canva | M365     | M365, Fireflies | M365, HubSpot | M365, Atlassian |           |
+| Remote MCP server in `.mcp.json`       |                 |             | Fireflies      | HubSpot     | Atlassian         | Context7, Playwright |
+| Subagent                               | yes             |             |                |             |                   | 2 (+2 Copilot format) |
+| Hooks                                  |                 |             |                |             |                   | 4         |
+| LSP servers                            |                 |             |                |             |                   | 2         |
+| Agent Plugins 1.0 manifest (Copilot)   |                 |             |                |             |                   | yes       |
+| Eval suite (`claude plugin eval`)      | yes             |             |                |             |                   |           |
 
 ## Repository layout
 
 ```
-.claude-plugin/marketplace.json   the marketplace: name, owner, plugin list
-.claude/settings.json             pins this marketplace + the plugin authoring stack for contributors
-plugins/<name>/                   one folder per plugin (see each README)
+.claude-plugin/marketplace.json   the marketplace (Claude Chat, Cowork, Claude Code, Copilot)
+.github/plugin/marketplace.json   identical copy at Copilot's default location (CI checks equality)
+.github/copilot/settings.json     pins the marketplace for Copilot users of this repo
+.claude/settings.json             pins the marketplace and the plugin-authoring stack for Claude Code
+plugins/<name>/                   one folder per plugin, each with its own README
 templates/plugin-template/        copy this to start a new plugin
-scripts/                          house-rule validator, hook smoke tests, validate-all
-docs/DEMO.md                      presenter script, 20 minutes
-docs/ARCHITECTURE.md              anatomy of a marketplace and a plugin, all component types
+scripts/                          house-rule validator, hook tests, packager, validate-all
+docs/HEYRA.md                     the fictional company, for presenters and contributors
+docs/DEMO.md                      presenter script, 30 minutes
+docs/ARCHITECTURE.md              formats and where each component works
 CONTRIBUTING.md                   how to add or change a plugin
-.github/workflows/validate.yml    CI: syntax, house rules, hook tests, claude plugin validate
+.github/workflows/validate.yml    CI: syntax, house rules, hook tests, claude plugin validate, packaging
 ```
 
 ## Validate and test
 
 ```bash
-bash scripts/validate-all.sh      # everything CI runs
-claude plugin validate .          # just the manifests
-node scripts/test-hooks.js        # every hook, with sample events
+bash scripts/validate-all.sh          # everything CI runs, plus dist/*.plugin
+python scripts/check-marketplace.py   # house rules only
+claude plugin validate --strict .     # official validator
+claude --plugin-dir ./plugins/heyra-email   # try a plugin in Claude Code without installing
 ```
 
-Try a plugin without installing it:
-
-```bash
-claude --plugin-dir ./plugins/nordlys-brand
-```
-
-Run the eval suite (costs tokens):
-
-```bash
-claude plugin eval plugins/nordlys-brand --runs 1
-```
-
-`claude plugin eval` is in early access. On an account without access the
-command prints "plugin eval is currently in early access" and does nothing;
-the suite is still a valid example of the format.
+`claude plugin eval plugins/heyra-marketing --runs 1` runs the eval case;
+the command is in early access and may print "early access" on accounts
+without it.
 
 ## Further reading
 
+- [The fictional company](docs/HEYRA.md)
 - [Presenter script](docs/DEMO.md)
-- [Architecture reference](docs/ARCHITECTURE.md)
-- Claude Code docs: [Plugins](https://code.claude.com/docs/en/plugins),
-  [Plugin marketplaces](https://code.claude.com/docs/en/plugin-marketplaces),
-  [Plugins reference](https://code.claude.com/docs/en/plugins-reference),
-  [Hooks](https://code.claude.com/docs/en/hooks-guide),
-  [Skills](https://code.claude.com/docs/en/skills),
-  [Subagents](https://code.claude.com/docs/en/sub-agents)
+- [Architecture and formats](docs/ARCHITECTURE.md)
+- Anthropic: [Use plugins in Claude](https://support.claude.com/en/articles/13837440-use-plugins-in-claude),
+  [Manage plugins for your organization](https://support.claude.com/en/articles/13837433-manage-plugins-for-your-organization),
+  [Cowork plugins guide](https://claude.com/docs/cowork/guide/plugins),
+  [Knowledge-work plugins](https://github.com/anthropics/knowledge-work-plugins),
+  [Claude Code plugins reference](https://code.claude.com/docs/en/plugins-reference)
+- GitHub: [Copilot CLI plugins](https://docs.github.com/en/copilot/concepts/agents/copilot-cli/about-cli-plugins),
+  [Agent Plugins 1.0](https://agent-plugins.org/specification),
+  [Agent Skills](https://agentskills.io/specification)
