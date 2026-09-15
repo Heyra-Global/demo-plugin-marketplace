@@ -8,6 +8,11 @@ Written September 2026 from the Claude Help Center articles linked at the
 end. Quotes are verbatim. Anthropic changes these products often; check the
 articles before a rollout.
 
+Step-by-step guides per surface are in [install/](install/README.md):
+[Enterprise admin](install/claude-enterprise-admin.md),
+[individual in Claude Desktop or claude.ai](install/claude-desktop-individual.md),
+[GitHub Copilot](install/github-copilot.md), [Claude Code](install/claude-code.md).
+
 ## The short answer
 
 | Who                          | What they do                                                                 | GitHub access needed          |
@@ -50,8 +55,9 @@ for organization marketplaces." "The person turning the toggle on must have
 admin-level access to that repository on GitHub." "Make sure the Claude
 GitHub App is installed in that repository."
 
-1. Fork or copy this repository into the company's GitHub organisation as a
-   private repository. Install the Claude GitHub App on it.
+1. Copy this repository into the company's GitHub organisation as a
+   private repository (**Use this template** on GitHub is the quickest).
+   Install the Claude GitHub App on it.
 2. In claude.ai, open **Organization settings > Plugins**.
 3. **Add plugins > GitHub**, enter the repository as `owner/repo`. The
    initial sync runs at once.
@@ -102,7 +108,7 @@ plugin name. The new version overwrites the existing one automatically."
 | ------------------------------------------- | ----------- | ------------- | --------------------------- | ------------------------------------------------------------------ |
 | Organisation marketplace, GitHub sync       | Admin       | Admin only    | Whole org, by group          | The normal case. Recommended                                        |
 | Organisation marketplace, ZIP upload        | Admin       | No            | Whole org, by group          | The company does not use GitHub, or for a quick pilot. ZIP up to 50 MB, up to 100 plugins. Re-upload to update |
-| Cowork **Add marketplace > Add from a repository** | Any user | For private repos: not documented; works with public repositories | That user's machine | A personal test, or a public demo marketplace |
+| Cowork **Add marketplace > Add from a repository** | Any user | No (this repository is public) | That user's machine | A personal install or test; a public demo marketplace like this one |
 | Cowork or Chat **upload a custom plugin file** (`.plugin` zip) | Any user | No | That user's machine  | Trying a plugin someone sent you; plugins you built yourself        |
 | **Share** from Customize > Plugins           | Any user, if the admin allowed sharing | No | The colleagues you pick | Team-level tools before they are promoted to the org marketplace   |
 
@@ -119,14 +125,17 @@ repository and the plugin owners who edit it.
 the required setup for an organisation marketplace. The repository must be
 private or internal.
 
-**Our demo repository is public. Can the admin use it?** No. Fork it into
-the company's organisation as a private repository, or upload the `.plugin`
+**This demo repository is public. Can the admin connect it directly?** No.
+Make a private copy under the company's GitHub organisation (**Use this
+template** on GitHub, a git mirror, or GitHub Import; steps in the
+[admin guide](install/claude-enterprise-admin.md)), or upload the `.plugin`
 files.
 
-**Can an employee install the marketplace themselves?** In Cowork, yes,
-from a public repository or from a `.plugin` file. That copy is local to
-their machine and outside admin control. For the company rollout, use the
-organisation marketplace.
+**Can an employee install the marketplace themselves?** In Cowork, yes:
+Customize > Plugins > Add marketplace > Add from a repository >
+`Heyra-Global/demo-plugin-marketplace`, or from a `.plugin` file. That copy
+is local to their machine and outside admin control. For the company
+rollout, use the organisation marketplace.
 
 **Can employees create or change plugins without Claude Code?** Yes. See
 [Contributing without a code editor](CONTRIBUTE-WITHOUT-CODE.md).

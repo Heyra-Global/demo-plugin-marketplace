@@ -39,60 +39,33 @@ only in heyra-dev.
 
 ## Install
 
-The full rollout guide for a company on Claude Enterprise is in
-[docs/INSTALL.md](docs/INSTALL.md). The short version: one Claude admin
-adds the marketplace once in Organization settings; employees need no
-GitHub account and install nothing; two or three plugin owners maintain
-the repository. Employees can build and share their own plugins from Cowork
-without Claude Code, see
+One guide per situation, each complete on its own, in
+[docs/install/](docs/install/README.md):
+
+| You are                                            | Guide                                                                 |
+| -------------------------------------------------- | --------------------------------------------------------------------- |
+| A Claude Enterprise or Team admin                  | [Install for the whole organisation](docs/install/claude-enterprise-admin.md) |
+| One person in Claude Desktop, Cowork or claude.ai  | [Install for yourself](docs/install/claude-desktop-individual.md)     |
+| A developer or admin on GitHub Copilot             | [Install in GitHub Copilot](docs/install/github-copilot.md)           |
+| A developer on Claude Code                         | [Install in Claude Code](docs/install/claude-code.md)                 |
+
+The short version:
+
+- **Whole organisation**: one Claude admin adds a **private copy** of this
+  repository in Organization settings > Plugins (organisation marketplaces
+  require a private or internal repository; use **Use this template** on
+  GitHub to make the copy). Employees install nothing and need no GitHub
+  account.
+- **Yourself**: in Cowork, Customize > Plugins > Add marketplace > Add from
+  a repository > `Heyra-Global/demo-plugin-marketplace`. This repository is
+  public, so it works without sign-in. Or upload a `.plugin` file from the
+  [releases page](https://github.com/Heyra-Global/demo-plugin-marketplace/releases).
+- **Claude Code**: `claude plugin marketplace add Heyra-Global/demo-plugin-marketplace`.
+- **GitHub Copilot**: `copilot plugin marketplace add Heyra-Global/demo-plugin-marketplace`.
+
+Roles, recommendation and what employees see: [docs/INSTALL.md](docs/INSTALL.md).
+How employees build and share plugins from Cowork without Claude Code:
 [docs/CONTRIBUTE-WITHOUT-CODE.md](docs/CONTRIBUTE-WITHOUT-CODE.md).
-
-### Claude Enterprise or Team admin (everyone gets the plugins)
-
-Requirements: Cowork and Skills enabled for the organisation, and an Owner
-or Primary Owner role.
-
-1. Organization settings > **Plugins** > **Add plugins** > **GitHub**.
-2. Enter `Heyra-Global/demo-plugin-marketplace`. The repository must be
-   **private or internal** for an organisation marketplace; fork this one
-   into your organisation if it is public at the time.
-3. Set each plugin to *Installed by default*, *Available for install*,
-   *Required* or *Not available*. Enterprise groups can get different
-   settings.
-4. Members see the plugins under **Customize > Plugins** in Chat and Cowork
-   at their next session.
-
-Alternative without GitHub: **Add plugins > Upload a file** with the
-`.plugin` zips from `dist/` (built by `python scripts/package-plugins.py`,
-also attached to every CI run).
-
-### Claude Cowork, one user
-
-**Plugins** > **Add marketplace** > `Heyra-Global/demo-plugin-marketplace`.
-This path works with a public repository. For a private one, upload the
-`.plugin` file from `dist/` instead. Turn on the Microsoft 365 connector
-under **Customize > Connectors** to let the email and meeting skills read
-your mail and calendar.
-
-### Claude Code
-
-```bash
-claude plugin marketplace add Heyra-Global/demo-plugin-marketplace
-claude plugin install heyra-dev@heyra-demo --scope user
-claude plugin install heyra-email@heyra-demo --scope user
-```
-
-### GitHub Copilot
-
-```bash
-copilot plugin marketplace add Heyra-Global/demo-plugin-marketplace
-copilot plugin install heyra-dev@heyra-demo
-```
-
-VS Code: add the repository to the `chat.plugins.marketplaces` setting.
-Copilot cloud agent and teams: commit `.github/copilot/settings.json` (this
-repository has one). Copilot Business and Enterprise: `copilot/managed-settings.json`
-in the organisation's `.github-private` repository.
 
 ## What a plugin contains
 
@@ -120,7 +93,8 @@ in the organisation's `.github-private` repository.
 plugins/<name>/                   one folder per plugin, each with its own README
 templates/plugin-template/        copy this to start a new plugin
 scripts/                          house-rule validator, hook tests, packager, validate-all
-docs/INSTALL.md                   rollout guide for Claude Enterprise: admin, employees, plugin owners
+docs/install/                     step-by-step install guides: Enterprise admin, individual, Copilot, Claude Code
+docs/INSTALL.md                   rollout guide for Claude Enterprise: roles, recommendation, what employees see
 docs/CONTRIBUTE-WITHOUT-CODE.md   how employees add and change plugins from Chat and Cowork
 docs/HEYRA.md                     the fictional company, for presenters and contributors
 docs/DEMO.md                      presenter script, 30 minutes
@@ -144,6 +118,7 @@ without it.
 
 ## Further reading
 
+- [Install guides](docs/install/README.md)
 - [Rollout guide for Claude Enterprise](docs/INSTALL.md)
 - [Contributing without a code editor](docs/CONTRIBUTE-WITHOUT-CODE.md)
 - [The fictional company](docs/HEYRA.md)
