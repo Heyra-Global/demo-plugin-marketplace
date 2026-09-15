@@ -1,0 +1,68 @@
+<h2 class="sr-only" style="position:absolute;left:-9999px;">An interactive interview round. Pick an option per question, add notes, and submit to send the answers to chat.</h2>
+<style>
+.q{display:none}
+.q.on{display:block}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:0.5px solid var(--border);border-radius:var(--radius);cursor:pointer;margin-bottom:8px;background:var(--surface-2)}
+.opt:hover{border-color:var(--border-strong)}
+.opt.sel{border:2px solid var(--border-accent);padding:8.5px 10.5px}
+.opt input{margin-top:3px}
+.lab{font-size:15px;font-weight:500}
+.desc{font-size:13px;color:var(--text-secondary);margin-top:2px}
+.rec{font-size:12px;color:var(--text-accent);background:var(--bg-accent);padding:2px 8px;border-radius:var(--radius);margin-left:6px}
+.err{font-size:13px;color:var(--text-danger);margin-top:6px;min-height:18px}
+textarea{width:100%;box-sizing:border-box;min-height:56px;font-size:14px;margin-top:8px}
+</style>
+
+<div style="padding:1rem 0 0;">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+    <span id="roundlbl" style="font-size:13px;color:var(--text-secondary);"></span>
+    <span id="counter" style="font-size:13px;color:var(--text-secondary);"></span>
+  </div>
+  <div style="height:4px;background:var(--surface-1);border-radius:2px;margin-bottom:1.5rem;"><div id="bar" style="height:4px;width:0;background:var(--fill-accent);border-radius:2px;"></div></div>
+  <div id="qs"></div>
+  <div class="err" id="err"></div>
+  <textarea id="notes" placeholder="Other answer or notes for this question"></textarea>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1rem;">
+    <button id="back" type="button"><i class="ti ti-arrow-left" aria-hidden="true"></i> Back</button>
+    <div style="display:flex;gap:8px;">
+      <button id="skip" type="button">Skip</button>
+      <button id="next" type="button">Next <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var ROUND = 1;
+  var QUESTIONS = [
+    {key:"example", q:"Replace this with a real question?", why:"One line on why the answer changes the outcome.", multi:false, rec:1,
+     options:[{label:"First option", desc:"What picking it implies"},{label:"Second option", desc:"What picking it implies"},{label:"Third option"}]}
+  ];
+
+  var root=document.getElementById('qs'),i=0,n=QUESTIONS.length,notes={},answers={};
+  var bar=document.getElementById('bar'),counter=document.getElementById('counter'),err=document.getElementById('err'),ta=document.getElementById('notes'),next=document.getElementById('next'),back=document.getElementById('back'),skip=document.getElementById('skip');
+  document.getElementById('roundlbl').textContent='Interview \u00b7 round '+ROUND;
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  QUESTIONS.forEach(function(Q,k){
+    var d=document.createElement('div');d.className='q';
+    var h='<p style="font-size:16px;margin:0 0 4px;">'+esc(Q.q)+'</p>';
+    if(Q.why)h+='<p style="font-size:13px;color:var(--text-secondary);margin:0 0 12px;">'+esc(Q.why)+'</p>';else h+='<div style="height:8px"></div>';
+    Q.options.forEach(function(o,j){
+      h+='<label class="opt"><input type="'+(Q.multi?'checkbox':'radio')+'" name="q'+k+'" value="'+esc(o.label)+'"><div><div class="lab">'+esc(o.label)+(Q.rec===j?'<span class="rec">Recommended</span>':'')+'</div>'+(o.desc?'<div class="desc">'+esc(o.desc)+'</div>':'')+'</div></label>';
+    });
+    d.innerHTML=h;root.appendChild(d);
+  });
+  var qs=[].slice.call(root.querySelectorAll('.q'));
+  root.querySelectorAll('.opt input').forEach(function(inp){inp.addEventListener('change',function(){
+    var q=inp.closest('.q');q.querySelectorAll('.opt').forEach(function(o){o.classList.toggle('sel',o.querySelector('input').checked)});err.textContent='';});});
+  ta.addEventListener('input',function(){notes[i]=ta.value;err.textContent='';});
+  function render(){qs.forEach(function(q,k){q.classList.toggle('on',k===i)});counter.textContent=(i+1)+' / '+n;bar.style.width=Math.round((i+1)/n*100)+'%';ta.value=notes[i]||'';err.textContent='';back.style.visibility=i===0?'hidden':'visible';next.innerHTML=i===n-1?'Submit answers \u2197':'Next <i class="ti ti-arrow-right" aria-hidden="true"></i>';}
+  function collect(k){var q=qs[k],sel=[].slice.call(q.querySelectorAll('input:checked')).map(function(x){return x.value});answers[k]={vals:sel,skipped:false};return sel.length||(notes[k]&&notes[k].trim().length);}
+  function go(d){i=Math.max(0,Math.min(n-1,i+d));render();}
+  next.addEventListener('click',function(){if(!collect(i)){err.textContent='Pick an option or type an answer, or skip';return;}if(i===n-1){send();}else{go(1);}});
+  skip.addEventListener('click',function(){collect(i);answers[i].skipped=true;if(i===n-1){send();}else{go(1);}});
+  back.addEventListener('click',function(){go(-1)});
+  function send(){var lines=['Interview round '+ROUND+' answers:'];QUESTIONS.forEach(function(Q,k){var a=answers[k]||{vals:[],skipped:true};var v=a.skipped&&!a.vals.length?'skipped':(a.vals.length?a.vals.join(', '):'(see note)');var nt=notes[k]&&notes[k].trim()?' \u2014 note: "'+notes[k].trim()+'"':'';lines.push('Q'+(k+1)+' ('+Q.key+'): '+v+nt);});sendPrompt(lines.join('\n'));}
+  render();
+})();
+</script>

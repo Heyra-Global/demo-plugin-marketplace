@@ -1,0 +1,10 @@
+{
+  "name": "heyra-essentials",
+  "version": "1.0.0",
+  "description": "General skills every Heyra employee has installed. /ama interviews you in rounds of multiple-choice questions to clarify a task before Claude starts, and plugin-help explains which Heyra plugins and skills exist, which one to use, and how to propose changes. Works in Claude Chat, Cowork and Claude Code; no connectors needed.",
+  "author": { "name": "Heyra", "email": "hello@heyra.io" },
+  "homepage": "https://github.com/Heyra-Global/demo-plugin-marketplace/tree/main/plugins/heyra-essentials",
+  "repository": "https://github.com/Heyra-Global/demo-plugin-marketplace",
+  "license": "MIT",
+  "keywords": ["essentials", "interview", "clarify", "questions", "help", "onboarding", "productivity"]
+}

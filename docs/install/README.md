@@ -27,6 +27,7 @@ what employees see) and [Contributing without a code editor](../CONTRIBUTE-WITHO
 
 | Plugin             | Claude Chat | Claude Cowork | Claude Code | GitHub Copilot |
 | ------------------ | :---------: | :-----------: | :---------: | :------------: |
+| heyra-essentials   | yes         | yes           | yes         |                |
 | heyra-marketing    | skills      | all           | all         |                |
 | heyra-email        | yes         | yes           | yes         |                |
 | heyra-meetings     | yes         | yes           | yes         |                |

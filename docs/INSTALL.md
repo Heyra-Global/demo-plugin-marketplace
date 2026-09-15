@@ -31,9 +31,10 @@ operations."
 
 1. Use the **organisation marketplace with GitHub sync**. One admin action,
    version control, automatic updates, admin control over who gets what.
-2. Set the five business plugins to **Installed by default**. Every
-   employee gets them at the next session and can turn one off if they do
-   not need it.
+2. Set `heyra-essentials` to **Required**: general skills for everyone,
+   no connectors, nothing to opt out of. Set the five business plugins to
+   **Installed by default**. Every employee gets them at the next session
+   and can turn one off if they do not need it.
 3. Set `heyra-dev` to **Available for install**, or use an Enterprise group
    for developers with **Installed by default**.
 4. Turn on **automatic updates** for the marketplace, so a merged pull

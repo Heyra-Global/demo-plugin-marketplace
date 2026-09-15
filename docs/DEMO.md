@@ -40,6 +40,16 @@ Show Organization settings > Plugins.
 
 ## 2. Claude Chat: the brand knows the rules (5 min)
 
+Optional opener, in Claude Chat with heyra-essentials on:
+
+```text
+/ama Jeg skal lave en præsentation til ledelsen om kundecentret.
+```
+
+> Claude asks a round of multiple-choice questions before it writes a
+> word. That is a skill every employee has. Requests get clearer, answers
+> get better, nobody had to learn prompting.
+
 In Claude Chat, with heyra-marketing on:
 
 ```text

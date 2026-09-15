@@ -2,9 +2,9 @@
 
 A demo plugin marketplace by [Heyra](https://heyra.io) for companies that
 use **Claude Chat** and **Claude Cowork** on a Claude Enterprise or Team
-plan, and **GitHub Copilot** for their developers. Five plugins for
-non-developers, one for developers, all about one fictional company, all
-installable from this repository.
+plan, and **GitHub Copilot** for their developers. One essentials plugin
+for everyone, five plugins for non-developers, one for developers, all
+about one fictional company, all installable from this repository.
 
 > **Demo content.** "Heyra" is used here as the name of an invented Danish
 > betting and gaming operator. Its products, people, policies, numbers and
@@ -26,6 +26,7 @@ GitHub Copilot.
 
 | Plugin                                           | For                        | What it does                                                                           | Chat | Cowork | Claude Code | Copilot |
 | ------------------------------------------------ | -------------------------- | -------------------------------------------------------------------------------------- | :--: | :----: | :---------: | :-----: |
+| [heyra-essentials](plugins/heyra-essentials/)    | Everyone                   | `/ama` interviews you to clarify a task; `plugin-help` explains the plugins            | yes  | yes    | yes         |         |
 | [heyra-marketing](plugins/heyra-marketing/)      | Marketing, communications  | Brand voice, campaign brief, social post, press release, Danish gambling-ad compliance check | yes | yes | yes |    |
 | [heyra-email](plugins/heyra-email/)              | Everyone with an inbox     | Inbox triage, replies in your voice, thread summary, follow-ups. Outlook               | yes  | yes    | yes         |         |
 | [heyra-meetings](plugins/heyra-meetings/)        | Managers, project leads    | Meeting prep, minutes, action tracker, weekly status                                    | yes  | yes    | yes         |         |
@@ -69,19 +70,19 @@ How employees build and share plugins from Cowork without Claude Code:
 
 ## What a plugin contains
 
-| Component                              | heyra-marketing | heyra-email | heyra-meetings | heyra-sales | heyra-back-office | heyra-dev |
-| -------------------------------------- | :-------------: | :---------: | :------------: | :---------: | :---------------: | :-------: |
-| Reference skill Claude loads on its own | brand-voice    | email-style | minutes-format | partner-playbook | expense-policy | tdd     |
-| Task skills (slash commands in Cowork) | 4               | 4           | 4              | 4           | 6                 | 5         |
-| Bundled templates and references       | yes             | yes         |                | yes         | yes               |           |
-| Danish examples                        | yes             | yes         | yes            | yes         | yes               |           |
-| Connectors (`CONNECTORS.md`)           | M365, Teams, Canva | M365     | M365, Fireflies | M365, HubSpot | M365, Atlassian |           |
-| Remote MCP server in `.mcp.json`       |                 |             | Fireflies      | HubSpot     | Atlassian         | Context7, Playwright |
-| Subagent                               | yes             |             |                |             |                   | 2 (+2 Copilot format) |
-| Hooks                                  |                 |             |                |             |                   | 4         |
-| LSP servers                            |                 |             |                |             |                   | 2         |
-| Agent Plugins 1.0 manifest (Copilot)   |                 |             |                |             |                   | yes       |
-| Eval suite (`claude plugin eval`)      | yes             |             |                |             |                   |           |
+| Component                              | heyra-essentials | heyra-marketing | heyra-email | heyra-meetings | heyra-sales | heyra-back-office | heyra-dev |
+| -------------------------------------- | :--------------: | :-------------: | :---------: | :------------: | :---------: | :---------------: | :-------: |
+| Reference skill Claude loads on its own | plugin-help     | brand-voice     | email-style | minutes-format | partner-playbook | expense-policy | tdd     |
+| Task skills (slash commands in Cowork) | 1 (`ama`)        | 4               | 4           | 4              | 4           | 6                 | 5         |
+| Bundled templates and references       | widget template  | yes             | yes         |                | yes         | yes               |           |
+| Danish examples                        |                  | yes             | yes         | yes            | yes         | yes               |           |
+| Connectors (`CONNECTORS.md`)           | none             | M365, Teams, Canva | M365     | M365, Fireflies | M365, HubSpot | M365, Atlassian |           |
+| Remote MCP server in `.mcp.json`       |                  |                 |             | Fireflies      | HubSpot     | Atlassian         | Context7, Playwright |
+| Subagent                               |                  | yes             |             |                |             |                   | 2 (+2 Copilot format) |
+| Hooks                                  |                  |                 |             |                |             |                   | 4         |
+| LSP servers                            |                  |                 |             |                |             |                   | 2         |
+| Agent Plugins 1.0 manifest (Copilot)   |                  |                 |             |                |             |                   | yes       |
+| Eval suite (`claude plugin eval`)      |                  | yes             |             |                |             |                   |           |
 
 ## Repository layout
 

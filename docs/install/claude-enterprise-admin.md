@@ -61,6 +61,7 @@ Settings > GitHub Apps, or the prompt Claude shows when you connect it).
 
    | Plugin            | State                    | Why                                                       |
    | ----------------- | ------------------------ | --------------------------------------------------------- |
+   | heyra-essentials  | Required                 | General skills for everyone (`/ama`, `plugin-help`); no connectors, nothing to opt out of |
    | heyra-email       | Installed by default     | Useful to everyone with an inbox                           |
    | heyra-meetings    | Installed by default     | Useful to everyone who runs meetings                        |
    | heyra-marketing   | Installed by default, or Available | Marketing and communications; others may like the brand voice |

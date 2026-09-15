@@ -5,10 +5,20 @@
     "email": "hello@heyra.io"
   },
   "metadata": {
-    "description": "Heyra demo marketplace: five plugins for non-developers in Claude Chat and Claude Cowork (marketing, email, meetings, partner sales, back office) and one developer plugin for Claude Code and GitHub Copilot. All content is about Heyra, a fictional Danish betting and gaming operator.",
-    "version": "2.0.0"
+    "description": "Heyra demo marketplace: an essentials plugin for everyone, five plugins for non-developers in Claude Chat and Claude Cowork (marketing, email, meetings, partner sales, back office) and one developer plugin for Claude Code and GitHub Copilot. All content is about Heyra, a fictional Danish betting and gaming operator.",
+    "version": "2.1.0"
   },
   "plugins": [
+    {
+      "name": "heyra-essentials",
+      "source": "./plugins/heyra-essentials",
+      "description": "General skills every Heyra employee has installed. /ama interviews you in rounds of multiple-choice questions to clarify a task before Claude starts, and plugin-help explains which Heyra plugins and skills exist, which one to use, and how to propose changes. Works in Claude Chat, Cowork and Claude Code; no connectors needed.",
+      "version": "1.0.0",
+      "author": { "name": "Heyra", "email": "hello@heyra.io" },
+      "license": "MIT",
+      "keywords": ["essentials", "interview", "clarify", "questions", "help", "onboarding", "productivity"],
+      "category": "core"
+    },
     {
       "name": "heyra-marketing",
       "source": "./plugins/heyra-marketing",
