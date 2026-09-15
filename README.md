@@ -39,6 +39,14 @@ only in heyra-dev.
 
 ## Install
 
+The full rollout guide for a company on Claude Enterprise is in
+[docs/INSTALL.md](docs/INSTALL.md). The short version: one Claude admin
+adds the marketplace once in Organization settings; employees need no
+GitHub account and install nothing; two or three plugin owners maintain
+the repository. Employees can build and share their own plugins from Cowork
+without Claude Code, see
+[docs/CONTRIBUTE-WITHOUT-CODE.md](docs/CONTRIBUTE-WITHOUT-CODE.md).
+
 ### Claude Enterprise or Team admin (everyone gets the plugins)
 
 Requirements: Cowork and Skills enabled for the organisation, and an Owner
@@ -112,6 +120,8 @@ in the organisation's `.github-private` repository.
 plugins/<name>/                   one folder per plugin, each with its own README
 templates/plugin-template/        copy this to start a new plugin
 scripts/                          house-rule validator, hook tests, packager, validate-all
+docs/INSTALL.md                   rollout guide for Claude Enterprise: admin, employees, plugin owners
+docs/CONTRIBUTE-WITHOUT-CODE.md   how employees add and change plugins from Chat and Cowork
 docs/HEYRA.md                     the fictional company, for presenters and contributors
 docs/DEMO.md                      presenter script, 30 minutes
 docs/ARCHITECTURE.md              formats and where each component works
@@ -134,6 +144,8 @@ without it.
 
 ## Further reading
 
+- [Rollout guide for Claude Enterprise](docs/INSTALL.md)
+- [Contributing without a code editor](docs/CONTRIBUTE-WITHOUT-CODE.md)
 - [The fictional company](docs/HEYRA.md)
 - [Presenter script](docs/DEMO.md)
 - [Architecture and formats](docs/ARCHITECTURE.md)

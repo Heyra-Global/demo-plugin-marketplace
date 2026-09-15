@@ -11,7 +11,8 @@ Each step has what to type and the point to make.
 - The marketplace added to the organisation (Organization settings >
   Plugins > Add plugins > GitHub, private or internal repository) with the
   six plugins set to *Installed by default*. Fallback: upload the `.plugin`
-  files from `dist/` (`python scripts/package-plugins.py`).
+  files from `dist/` (`python scripts/package-plugins.py`). The step-by-step
+  admin flow is in `docs/INSTALL.md`.
 - Microsoft 365 connected under Customize > Connectors on the demo account,
   with a demo mailbox that contains a few prepared mails: one from a
   colleague with a deadline, one from a "player" asking to close an
@@ -145,6 +146,13 @@ Back to Organization settings.
 > syncs when it merges. Security scanning checks uploaded plugins. Groups
 > decide who sees what. Members cannot edit the organisation's plugins.
 > Audit and compliance APIs cover Cowork on Enterprise.
+
+> Nobody except one admin and the plugin owners needs a GitHub account.
+> Employees get the plugins from Claude, not from GitHub. And an employee
+> who wants a plugin of their own builds it in Cowork with Plugin Create,
+> shares it with the team, and hands it to the plugin owners when it has
+> proven itself. The rollout guide and the no-code contribution guide are in
+> the repository.
 
 Show `.github/workflows/validate.yml`.
 

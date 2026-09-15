@@ -130,7 +130,9 @@ equivalent of `${CLAUDE_PLUGIN_ROOT}`.
 | Copilot managed settings (`.github-private/copilot/managed-settings.json`) | any | Copilot admin |
 
 Organisation-managed plugins appear in Chat and Cowork; members cannot
-edit them. Install states: Installed by default, Available for install,
+edit them. Members need no GitHub account: the admin's access is verified
+once and the sync then runs through the Claude GitHub App installed on the
+repository. The rollout guide is [INSTALL.md](INSTALL.md). Install states: Installed by default, Available for install,
 Required, Not available; Enterprise groups can override per group. Sync
 runs when a pull request with a version bump merges to the default branch,
 if auto-update is on. Enterprise security scanning checks uploaded plugins.

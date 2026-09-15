@@ -4,6 +4,14 @@ This repository is a demo. Contributions that make the demo clearer are
 welcome: a workflow a client team recognises, a sharper Danish example, a
 surface not yet shown.
 
+## Contributing from Chat or Cowork, without a code editor
+
+Employees who do not use Claude Code build plugins in Cowork with
+Anthropic's Plugin Create plugin, share them with colleagues, and hand the
+`.plugin` file to the plugin owners for promotion into this marketplace.
+The full flow, the handover note and the plugin-owner runbook are in
+[docs/CONTRIBUTE-WITHOUT-CODE.md](docs/CONTRIBUTE-WITHOUT-CODE.md).
+
 ## Add a plugin
 
 1. Copy the template:
