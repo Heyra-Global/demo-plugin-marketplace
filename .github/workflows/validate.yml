@@ -1,0 +1,77 @@
+name: Validate marketplace
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate plugins and marketplace
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Require a version bump for modified plugins (PRs only)
+        if: github.event_name == 'pull_request'
+        run: |
+          changed=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD" | grep '^plugins/' | cut -d/ -f2 | sort -u || true)
+          if [ -z "$changed" ]; then echo "No plugins modified"; exit 0; fi
+          missing=""
+          for p in $changed; do
+            old=$(git show "origin/${{ github.base_ref }}:.claude-plugin/marketplace.json" | jq -r --arg n "$p" '.plugins[] | select(.name==$n) | .version // "0.0.0"')
+            new=$(jq -r --arg n "$p" '.plugins[] | select(.name==$n) | .version // "0.0.0"' .claude-plugin/marketplace.json)
+            if [ "$old" = "$new" ]; then echo "::error::plugin '$p' changed but version stayed $old"; missing="$missing $p"; else echo "ok: $p $old -> $new"; fi
+          done
+          [ -z "$missing" ]
+
+      - name: JSON syntax
+        run: |
+          for f in .claude-plugin/marketplace.json .claude/settings.json plugins/*/.claude-plugin/plugin.json plugins/*/hooks/hooks.json plugins/*/.mcp.json plugins/*/.lsp.json; do
+            [ -f "$f" ] || continue
+            jq -e . "$f" >/dev/null && echo "ok  $f"
+          done
+
+      - name: Script syntax (node --check, bash -n)
+        run: |
+          for f in plugins/*/hooks/*.js plugins/*/mcp/*.js scripts/*.js; do node --check "$f"; done
+          for f in plugins/*/hooks/*.sh plugins/*/scripts/*.sh scripts/*.sh; do bash -n "$f"; done
+          python -m py_compile plugins/*/scripts/*.py scripts/*.py
+
+      - name: House rules (scripts/check-marketplace.py)
+        run: python scripts/check-marketplace.py
+
+      - name: Hook smoke tests
+        run: node scripts/test-hooks.js
+
+      - name: Bundled MCP server smoke test
+        run: node plugins/nordlys-brand/mcp/smoke-test.js
+
+      - name: Install Claude Code CLI
+        run: |
+          curl -fsSL https://claude.ai/install.sh | bash
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: claude plugin validate (marketplace and every plugin)
+        run: |
+          claude --version
+          claude plugin validate .
+          for p in plugins/*/; do claude plugin validate "$p"; done
