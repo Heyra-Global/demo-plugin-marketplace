@@ -10,7 +10,7 @@ Each step has what to type and the point to make.
   and Skills enabled, and Claude Desktop with Cowork on the demo machine.
 - The marketplace added to the organisation (Organization settings >
   Plugins > Add plugins > GitHub, private or internal repository) with the
-  six plugins set to *Installed by default*. Fallback: upload the `.plugin`
+  seven plugins set to *Installed by default*. Fallback: upload the `.plugin`
   files from `dist/` (`python scripts/package-plugins.py`). The step-by-step
   admin flow is in `docs/INSTALL.md`.
 - Microsoft 365 connected under Customize > Connectors on the demo account,

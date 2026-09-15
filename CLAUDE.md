@@ -1,7 +1,7 @@
 # heyra-demo marketplace
 
 A demo plugin marketplace for Claude Chat, Claude Cowork, Claude Code and
-GitHub Copilot. Six plugins under `plugins/`; the manifest is
+GitHub Copilot. Seven plugins under `plugins/`; the manifest is
 `.claude-plugin/marketplace.json` with an identical copy at
 `.github/plugin/marketplace.json`. The list of what exists lives in those
 files and in each `plugins/*/.claude-plugin/plugin.json`; do not restate it

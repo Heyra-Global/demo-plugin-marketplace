@@ -56,9 +56,13 @@ for organization marketplaces." "The person turning the toggle on must have
 admin-level access to that repository on GitHub." "Make sure the Claude
 GitHub App is installed in that repository."
 
-1. Copy this repository into the company's GitHub organisation as a
-   private repository (**Use this template** on GitHub is the quickest).
-   Install the Claude GitHub App on it.
+1. This repository is already private. If your GitHub account already has
+   admin access to it (for example you are in the `Heyra-Global`
+   organisation), skip to step 2. Otherwise, either ask a repository admin
+   to add you as a collaborator with admin access, or make your own copy
+   in your company's GitHub organisation with **Use this template** (needs
+   at least read access to this repository) and install the Claude GitHub
+   App on your copy.
 2. In claude.ai, open **Organization settings > Plugins**.
 3. **Add plugins > GitHub**, enter the repository as `owner/repo`. The
    initial sync runs at once.
@@ -109,8 +113,8 @@ plugin name. The new version overwrites the existing one automatically."
 | ------------------------------------------- | ----------- | ------------- | --------------------------- | ------------------------------------------------------------------ |
 | Organisation marketplace, GitHub sync       | Admin       | Admin only    | Whole org, by group          | The normal case. Recommended                                        |
 | Organisation marketplace, ZIP upload        | Admin       | No            | Whole org, by group          | The company does not use GitHub, or for a quick pilot. ZIP up to 50 MB, up to 100 plugins. Re-upload to update |
-| Cowork **Add marketplace > Add from a repository** | Any user | No (this repository is public) | That user's machine | A personal install or test; a public demo marketplace like this one |
-| Cowork or Chat **upload a custom plugin file** (`.plugin` zip) | Any user | No | That user's machine  | Trying a plugin someone sent you; plugins you built yourself        |
+| Cowork **Add marketplace > Add from a repository** | Any user | Yes, an account with access to this private repository (not officially documented as supported for individuals even then) | That user's machine | Not recommended while the repository is private. Use the organisation path, or ZIP upload |
+| Cowork or Chat **upload a custom plugin file** (`.plugin` zip) | Any user | No, but someone with repo access must hand you the file (release assets are private now too) | That user's machine  | Trying a plugin someone sent you; plugins you built yourself        |
 | **Share** from Customize > Plugins           | Any user, if the admin allowed sharing | No | The colleagues you pick | Team-level tools before they are promoted to the org marketplace   |
 
 The `.plugin` files for this marketplace are attached to every GitHub
@@ -123,20 +127,24 @@ rebuilds them into `dist/`.
 repository and the plugin owners who edit it.
 
 **Can we keep the repository private and still roll it out?** Yes. That is
-the required setup for an organisation marketplace. The repository must be
-private or internal.
+the required setup for an organisation marketplace, and this repository is
+private.
 
-**This demo repository is public. Can the admin connect it directly?** No.
-Make a private copy under the company's GitHub organisation (**Use this
-template** on GitHub, a git mirror, or GitHub Import; steps in the
-[admin guide](install/claude-enterprise-admin.md)), or upload the `.plugin`
-files.
+**Can the admin connect this repository directly?** Only if their GitHub
+account has admin access to it, which means being a collaborator or a
+member of the `Heyra-Global` organisation. Anyone else needs one of: being
+added as a collaborator with admin access, a private copy made by someone
+who already has access (**Use this template** on GitHub, a git mirror, or
+GitHub Import — all require at least read access to clone from), or the
+`.plugin` files handed to them for the ZIP-upload path, which needs no
+GitHub access at all. Steps for each in the
+[admin guide](install/claude-enterprise-admin.md).
 
-**Can an employee install the marketplace themselves?** In Cowork, yes:
-Customize > Plugins > Add marketplace > Add from a repository >
-`Heyra-Global/demo-plugin-marketplace`, or from a `.plugin` file. That copy
-is local to their machine and outside admin control. For the company
-rollout, use the organisation marketplace.
+**Can an employee install the marketplace themselves?** Only with a
+`.plugin` file someone hands them, uploaded under Customize > Plugins. The
+"Add from a repository" path needs GitHub access to this private
+repository and is not the supported path for individuals in any case. For
+the company rollout, use the organisation marketplace.
 
 **Can employees create or change plugins without Claude Code?** Yes. See
 [Contributing without a code editor](CONTRIBUTE-WITHOUT-CODE.md).

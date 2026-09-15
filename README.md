@@ -12,6 +12,13 @@ about one fictional company, all installable from this repository.
 > marketing plugin are real and summarised for the demo; they are not legal
 > advice.
 
+> **Repository visibility.** This repository is **private**. Claude
+> organisation marketplaces require a private or internal repository, so
+> this is also the state a client needs it in to connect it. It means a
+> plugin owner must grant GitHub access (or hand over packaged `.plugin`
+> files) to anyone who is not already a collaborator here. See
+> [docs/install/claude-enterprise-admin.md](docs/install/claude-enterprise-admin.md).
+
 ## What a marketplace is
 
 A marketplace is a git repository with one file,
@@ -52,15 +59,17 @@ One guide per situation, each complete on its own, in
 
 The short version:
 
-- **Whole organisation**: one Claude admin adds a **private copy** of this
-  repository in Organization settings > Plugins (organisation marketplaces
-  require a private or internal repository; use **Use this template** on
-  GitHub to make the copy). Employees install nothing and need no GitHub
-  account.
-- **Yourself**: in Cowork, Customize > Plugins > Add marketplace > Add from
-  a repository > `Heyra-Global/demo-plugin-marketplace`. This repository is
-  public, so it works without sign-in. Or upload a `.plugin` file from the
-  [releases page](https://github.com/Heyra-Global/demo-plugin-marketplace/releases).
+- **Whole organisation**: this repository is already private, which is
+  what an organisation marketplace requires. A Claude admin with GitHub
+  admin access to it (or their own private copy, made with **Use this
+  template**) connects it once in Organization settings > Plugins.
+  Employees install nothing and need no GitHub account.
+- **Yourself**: this repository is private, so the "Add from a repository"
+  path in Cowork needs your Claude account to be signed in to a GitHub
+  account with access to it (not officially documented as supported for
+  individuals; the organisation path below is the supported one). The
+  reliable personal path is to have a plugin owner hand you a `.plugin`
+  file and upload it under Customize > Plugins.
 - **Claude Code**: `claude plugin marketplace add Heyra-Global/demo-plugin-marketplace`.
 - **GitHub Copilot**: `copilot plugin marketplace add Heyra-Global/demo-plugin-marketplace`.
 

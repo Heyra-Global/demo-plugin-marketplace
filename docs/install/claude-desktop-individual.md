@@ -1,9 +1,18 @@
 # Install for yourself (Claude Desktop, Claude Cowork, claude.ai)
 
-Result: the plugins appear under **Customize > Plugins** for you only,
-saved on your computer. No admin, no GitHub account. Works on any paid
-plan (Pro, Max, Team, Enterprise); on Team and Enterprise the admin may have
-turned parts of this off.
+Result: the plugin(s) appear under **Customize > Plugins** for you only,
+saved on your computer. Works on any paid plan (Pro, Max, Team,
+Enterprise); on Team and Enterprise the admin may have turned parts of
+this off.
+
+> **This repository is private.** The repository-based path below
+> (Path A) needs your Claude account to be signed in to a GitHub account
+> with access to it, and is not officially documented as supported for
+> individual users even then. **Path B, uploading a `.plugin` file someone
+> hands you, is the reliable personal path** while the repository is
+> private. For the whole organisation at once, use the
+> [admin guide](claude-enterprise-admin.md) instead — that path is
+> designed for exactly this: a private repository, connected once.
 
 Quotes are from the Help Center article
 [Use plugins in Claude](https://support.claude.com/en/articles/13837440-use-plugins-in-claude),
@@ -16,33 +25,38 @@ Desktop, and Claude Cowork. The skills bundled in a plugin work across all
 three. Hooks and sub-agents run only in Cowork, so they appear grayed out
 in chat."
 
-## Path A: add the marketplace in Cowork (30 seconds)
+## Path A: add the marketplace in Cowork (needs GitHub access to this repository)
 
 1. Open Claude Desktop, switch to **Cowork**.
 2. Open the **Customize** menu, go to the **Plugins** tab.
 3. **Add marketplace > Add from a repository**.
 4. Enter `Heyra-Global/demo-plugin-marketplace` (or the full URL
-   `https://github.com/Heyra-Global/demo-plugin-marketplace`). The
-   repository is public, so no sign-in is needed.
-5. The marketplace `heyra-demo` appears with six plugins. Install the ones
-   you want: heyra-email and heyra-meetings for daily work, heyra-marketing
-   for communications, heyra-sales, heyra-back-office, heyra-dev for
+   `https://github.com/Heyra-Global/demo-plugin-marketplace`). Because the
+   repository is private, this only has a chance of working if your Claude
+   account is connected to a GitHub identity that has at least read access
+   to it (for example, you were added as a collaborator). If it fails, use
+   Path B.
+5. If it succeeds, the marketplace `heyra-demo` appears with seven
+   plugins. Install the ones you want: heyra-essentials for everyone,
+   heyra-email and heyra-meetings for daily work, heyra-marketing for
+   communications, heyra-sales, heyra-back-office, heyra-dev for
    developers.
 6. Later, press **Update** on the marketplace to pull new versions.
 
-## Path B: upload a plugin file (no marketplace)
+## Path B: upload a plugin file (recommended while the repository is private)
 
-For Claude Chat on the web, or when you received a `.plugin` file.
+Ask a plugin owner (someone with access to this repository) for the
+`.plugin` file you want, for example `heyra-email.plugin` — sent directly,
+or from a run of `python scripts/package-plugins.py` in their checkout.
+The [releases page](https://github.com/Heyra-Global/demo-plugin-marketplace/releases)
+also has them, but now needs GitHub sign-in and repository access to open.
 
-1. Download the `.plugin` file you want from the
-   [releases page](https://github.com/Heyra-Global/demo-plugin-marketplace/releases),
-   for example `heyra-email.plugin`.
-2. **Customize > Plugins**, choose the option to upload a custom plugin file
+1. **Customize > Plugins**, choose the option to upload a custom plugin file
    ("You can also upload a custom plugin file if you built one yourself.").
-3. Pick the file. The plugin is installed and enabled for you.
+2. Pick the file. The plugin is installed and enabled for you.
 
 "On Claude Desktop and in Cowork, plugins you add yourself are saved
-locally to your computer."
+locally to your computer." Repeat per plugin, and on every device you use.
 
 ## Path C: a colleague shared it with you
 

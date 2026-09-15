@@ -24,6 +24,13 @@ next to the Claude manifest, Copilot custom agents under
 
 ## Copilot CLI
 
+> **This repository is private.** Every command below needs your local
+> `git`/`gh` (or the credentials Copilot CLI uses) to have at least read
+> access to it — ask a plugin owner to add you as a collaborator, or work
+> from your own copy (see Step 0 in the
+> [admin guide](claude-enterprise-admin.md)) and substitute its
+> `owner/repo`.
+
 ```bash
 copilot plugin marketplace add Heyra-Global/demo-plugin-marketplace
 copilot plugin install heyra-dev@heyra-demo
@@ -132,7 +139,7 @@ for the three ways to copy it.
 
 | Symptom                                    | Fix                                                                                   |
 | ------------------------------------------ | ------------------------------------------------------------------------------------- |
-| Marketplace not found                      | Check the spelling `Heyra-Global/demo-plugin-marketplace`; the repository is public    |
+| Marketplace not found                      | This repository is private: `copilot plugin marketplace add` needs a `gh`/git session with access to it. Ask a plugin owner to add you as a collaborator, or use `copilot plugin install owner/repo:plugins/heyra-dev` against your own copy |
 | Plugin installs but skills do not appear   | Update Copilot CLI to 1.0.74 or newer; run `copilot plugin list`                       |
 | Hook does not run in VS Code               | Expected for `matcher`-filtered hooks in Claude format; VS Code ignores matchers and the script filters itself |
 | Enterprise: install refused                | A managed setting restricts marketplaces (`strictKnownMarketplaces`); ask the Copilot admin |

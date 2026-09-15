@@ -14,17 +14,23 @@ checked September 2026.
 | -------------------------------------------- | ----------------------------------------------------------------------------------------------- |
 | You are an Owner or Primary Owner            | "Owners and Primary Owners of Team and Enterprise plans can manage organization plugins"         |
 | Cowork and Skills are enabled for the org    | "Cowork and Skills must both be enabled for your organization before you can use plugin marketplaces" |
-| A **private or internal** copy of this repository in your company's GitHub | "Your repository must be private or internal—public repos aren't allowed for organization marketplaces" |
-| You have admin access to that repository     | "The person turning the toggle on must have admin-level access to that repository on GitHub"     |
+| Admin access to a **private or internal** copy of this repository on GitHub | "Your repository must be private or internal—public repos aren't allowed for organization marketplaces" and "The person turning the toggle on must have admin-level access to that repository on GitHub" |
 | The Claude GitHub App is installed on it     | "Make sure the Claude GitHub App is installed in that repository"                                |
 
 No GitHub at all in the company? Skip to [Path B: upload the plugin files](#path-b-upload-the-plugin-files).
 
-## Step 0: make a private copy of this repository
+## Step 0: get a copy of this repository you have admin access to
 
-This repository is public so anyone can read and try it. An organisation
-marketplace needs a private copy under your own GitHub organisation. Three
-ways, pick one:
+This repository (`Heyra-Global/demo-plugin-marketplace`) is **private**.
+If your GitHub account already has admin access to it — for example you
+are a member of the `Heyra-Global` organisation — you already meet the
+requirement above; skip to [Path A](#path-a-connect-the-repository-recommended).
+
+Otherwise, ask a repository admin to add you as a collaborator with Admin
+role (Settings > Collaborators on the repository), or make your own copy
+under your company's GitHub organisation. Making a copy still needs at
+least **read** access to this repository, granted the same way. Three ways
+to copy it once you have that access, pick one:
 
 **Use this template (GitHub web, no git needed)**
 
@@ -56,7 +62,7 @@ Settings > GitHub Apps, or the prompt Claude shows when you connect it).
    confirm you have access, then Cowork uses its GitHub App installation
    token for sync operations." Members are never asked for GitHub.
 4. "An initial sync runs automatically when you connect a repository."
-   The six plugins appear in the list.
+   The seven plugins appear in the list.
 5. For each plugin choose the state. Recommended:
 
    | Plugin            | State                    | Why                                                       |
@@ -85,9 +91,11 @@ Settings > GitHub Apps, or the prompt Claude shows when you connect it).
 
 For a pilot, or when the company does not use GitHub.
 
-1. Download the six `.plugin` files from the
-   [releases page](https://github.com/Heyra-Global/demo-plugin-marketplace/releases)
-   (or build them with `python scripts/package-plugins.py`).
+1. Get the seven `.plugin` files: from someone with repository access
+   (the [releases page](https://github.com/Heyra-Global/demo-plugin-marketplace/releases)
+   requires GitHub sign-in and repo access now that the repository is
+   private), or build them yourself with `python scripts/package-plugins.py`
+   after cloning the repository.
 2. **Organization settings > Plugins > Add plugins > Upload a file**, then
    **Upload to a new marketplace** for the first file and to that
    marketplace for the rest. Limits: "Max plugin ZIP size (upload): 50 MB |
@@ -133,7 +141,7 @@ the admin console.
 
 | Symptom                                       | Cause and fix                                                                                 |
 | --------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| "Repository not found" or sync fails          | The repository is public, the Claude GitHub App is not installed, or you lack admin access on it |
+| "Repository not found" or sync fails          | Your GitHub account lacks admin access to this repository, or the Claude GitHub App is not installed on it |
 | A plugin is missing in the catalog            | Its state is Not available, or the marketplace has not synced since the plugin was added       |
 | A member sees the plugin but cannot edit it   | Expected. "Members can't edit organization-managed plugins"                                    |
 | Subagent greyed out in Chat                   | Expected. "Hooks and sub-agents run only in Cowork"                                            |

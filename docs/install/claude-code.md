@@ -1,6 +1,6 @@
 # Install in Claude Code
 
-Result: any of the six plugins is available in Claude Code sessions, at
+Result: any of the seven plugins is available in Claude Code sessions, at
 user scope (everywhere) or project scope (one repository, committed for
 the team).
 
