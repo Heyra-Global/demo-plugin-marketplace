@@ -1,6 +1,6 @@
 {
   "name": "heyra-marketing",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Marketing and communications for Heyra, a fictional Danish betting and gaming operator. Brand voice in Danish and English, campaign briefs, social posts, press releases, and a compliance check against Danish gambling-marketing rules (18+, StopSpillet, ROFUS, bonus limits). Skills work in Claude Chat and Cowork; the brand-compliance reviewer subagent runs in Cowork.",
   "author": { "name": "Heyra", "email": "hello@heyra.io" },
   "homepage": "https://github.com/Heyra-Global/demo-plugin-marketplace/tree/main/plugins/heyra-marketing",

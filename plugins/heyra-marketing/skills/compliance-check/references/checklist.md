@@ -84,7 +84,7 @@ them. Report them separately.
 | #  | Rule                                                                    | How to check                                        |
 | -- | ----------------------------------------------------------------------- | --------------------------------------------------- |
 | F1 | No pressure or urgency wording ("sidste chance", "kun i dag", "skynd dig", "inden det er for sent", countdowns) | Scan for the phrases; any hit fails |
-| F2 | The game or the occasion comes before the money; "vind" is never the first word | Read the first sentence                     |
+| F2 | The first sentence names the game or the occasion ("Lørdag trækker vi Ugens Tal", "Påskeudgaven af Skrabelykke er i kiosken"). An amount, a jackpot or "vind" as the opening fails | Read the first sentence |
 | F3 | Amounts appear once, exact, with unit ("30 mio. kr.")                    | Count occurrences; check the unit                   |
 | F4 | No word from the avoid list (garanteret, sikker gevinst, risikofrit, gratis penge, tjen penge, bliv rig, ...) | Scan                    |
 | F5 | The mandatory block is set in Nordhav or Lys, never in the accent colour | Visual material only                                |
