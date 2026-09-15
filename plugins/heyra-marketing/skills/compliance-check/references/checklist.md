@@ -76,6 +76,20 @@ formal criticism for an SMS to a ROFUS-registered person (2023).
 Source: Ministry of Taxation, "Spilpakke 1: Et mere ansvarligt spilmarked",
 24 October 2025; bill L 127 (February 2026) lapsed on 24 March 2026.
 
+## F. Heyra house rules (brand, not law)
+
+These come from the brand-voice skill. A piece can be legal and still fail
+them. Report them separately.
+
+| #  | Rule                                                                    | How to check                                        |
+| -- | ----------------------------------------------------------------------- | --------------------------------------------------- |
+| F1 | No pressure or urgency wording ("sidste chance", "kun i dag", "skynd dig", "inden det er for sent", countdowns) | Scan for the phrases; any hit fails |
+| F2 | The game or the occasion comes before the money; "vind" is never the first word | Read the first sentence                     |
+| F3 | Amounts appear once, exact, with unit ("30 mio. kr.")                    | Count occurrences; check the unit                   |
+| F4 | No word from the avoid list (garanteret, sikker gevinst, risikofrit, gratis penge, tjen penge, bliv rig, ...) | Scan                    |
+| F5 | The mandatory block is set in Nordhav or Lys, never in the accent colour | Visual material only                                |
+| F6 | Nobody who looks under 25 in visuals; no celebrities or athletes         | Visual material only; "unclear" if you cannot tell  |
+
 ## Quick reference: the mandatory block
 
 ```

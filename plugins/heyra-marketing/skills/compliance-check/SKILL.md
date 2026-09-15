@@ -47,14 +47,24 @@ Channel: <channel> | Promotes a game: <yes/no> | Result: <PASS | FAIL (n issues)
 ## Pending rules (not yet in force)
 - ...
 
+## House rules (brand, not law)
+| # | Rule | Status | Evidence | Fix |
+|---|------|--------|----------|-----|
+
 ## Questions for the owner
 - ...
 
 Pre-check only. Final approval: Jura & Compliance.
 ```
 
-6. If the result is FAIL, offer a corrected version of the text that keeps
-   the user's facts and fixes only what failed.
+6. Section F of the checklist holds Heyra's own house rules (no pressure
+   wording, game before money, the avoid list). Report them under a
+   separate heading "House rules" so the team sees what is law and what is
+   brand.
+7. If the result is FAIL, offer a corrected version of the text that keeps
+   the user's facts. Load the `brand-voice` skill for the rewrite: the
+   corrected version must pass the law **and** the house rules, or it is
+   not a corrected version.
 
 ## Notes
 
