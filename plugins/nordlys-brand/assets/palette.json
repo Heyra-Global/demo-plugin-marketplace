@@ -1,0 +1,26 @@
+{
+  "brand": "Nordlys Analytics",
+  "colors": [
+    { "name": "Polar Night", "hex": "#0B1F33", "role": "Primary dark. Headlines, dark backgrounds, the wordmark on light surfaces." },
+    { "name": "Ice White", "hex": "#F4F8FB", "role": "Default light background for slides, documents and UI surfaces." },
+    { "name": "Aurora Green", "hex": "#2EE6A6", "role": "The signature accent. One highlight per view: a key number, a call to action, a chart series." },
+    { "name": "Fjord Blue", "hex": "#1E5A8A", "role": "Secondary brand color. Links, secondary buttons, second chart series." },
+    { "name": "Slate", "hex": "#5B6B7A", "role": "Secondary text, borders, axis lines, captions." },
+    { "name": "Ember", "hex": "#FF6B4A", "role": "Alerts and warnings only. Never decorative." }
+  ],
+  "typography": {
+    "headings": "Inter, 600 weight",
+    "body": "Inter, 400 weight, 16px minimum on screen",
+    "code": "JetBrains Mono"
+  },
+  "logo": {
+    "file": "assets/nordlys-logo.svg",
+    "clearSpace": "At least the height of the letter N on every side.",
+    "minWidth": "120px on screen, 30mm in print",
+    "rules": [
+      "Use the SVG as is. Do not recolor, stretch, rotate or add effects.",
+      "Place the logo on Polar Night or Ice White only.",
+      "Never place the logo on photographs without a solid backing panel."
+    ]
+  }
+}

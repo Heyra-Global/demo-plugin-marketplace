@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "fabric-core": {
+      "type": "http",
+      "url": "https://api.fabric.microsoft.com/v1/mcp/core",
+      "headersHelper": "${CLAUDE_PLUGIN_ROOT}/scripts/mcp_auth_header.sh"
+    }
+  }
+}

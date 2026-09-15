@@ -1,0 +1,53 @@
+{
+  "name": "heyra-demo",
+  "owner": {
+    "name": "Heyra",
+    "email": "hello@heyra.io"
+  },
+  "metadata": {
+    "description": "Heyra demo marketplace: four realistic Claude Code plugins that show every plugin component type - skills, subagents, hooks, MCP servers, LSP servers, output styles and evals.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "nordlys-brand",
+      "source": "./plugins/nordlys-brand",
+      "description": "Brand guidelines and marketing for Nordlys Analytics (fictional). Brand voice and palette skills, /linkedin-post, /campaign-brief, /brand-check, a brand-reviewer subagent, banned-word hooks, a bundled brand-assets MCP server, a marketing output style and an eval suite.",
+      "version": "1.0.0",
+      "author": { "name": "Heyra", "email": "hello@heyra.io" },
+      "license": "MIT",
+      "keywords": ["brand", "marketing", "linkedin", "tone-of-voice", "palette", "mcp", "hooks", "evals"],
+      "category": "marketing"
+    },
+    {
+      "name": "fabric-toolkit",
+      "source": "./plugins/fabric-toolkit",
+      "description": "Microsoft Fabric data engineering. Medallion architecture and PySpark notebook skills with code templates, Fabric CLI reference, /fabric-deploy, notebook-reviewer and fabric-deployer subagents, safety hooks for destructive fab commands, the Fabric Core MCP server with Azure CLI auth, and userConfig for workspace settings.",
+      "version": "1.0.0",
+      "author": { "name": "Heyra", "email": "hello@heyra.io" },
+      "license": "MIT",
+      "keywords": ["fabric", "microsoft", "lakehouse", "pyspark", "delta", "medallion", "mcp", "hooks", "notebooks"],
+      "category": "data-engineering"
+    },
+    {
+      "name": "dbt-toolkit",
+      "source": "./plugins/dbt-toolkit",
+      "description": "dbt analytics engineering. Model conventions that load automatically for models/**, /dbt-new-model scaffolder, /dbt-test-coverage report, /dbt-build-fix in a forked subagent, dbt-runner and sql-reviewer subagents, production-guard and model-lint hooks, and the official dbt MCP server.",
+      "version": "1.0.0",
+      "author": { "name": "Heyra", "email": "hello@heyra.io" },
+      "license": "MIT",
+      "keywords": ["dbt", "analytics-engineering", "sql", "data-modeling", "testing", "mcp", "hooks"],
+      "category": "data-engineering"
+    },
+    {
+      "name": "dev-toolkit",
+      "source": "./plugins/dev-toolkit",
+      "description": "General coding productivity. /commit, /pr-description, /review-changes, /doctor and /setup skills, TDD guidance, code-reviewer and test-writer subagents, shell and prompt hooks (destructive-command guard, auto-format, session git context, stop-time test check), Python and TypeScript LSP servers, and Context7 plus Playwright MCP servers.",
+      "version": "1.0.0",
+      "author": { "name": "Heyra", "email": "hello@heyra.io" },
+      "license": "MIT",
+      "keywords": ["git", "commit", "pull-request", "code-review", "tdd", "lsp", "mcp", "hooks", "productivity"],
+      "category": "development"
+    }
+  ]
+}

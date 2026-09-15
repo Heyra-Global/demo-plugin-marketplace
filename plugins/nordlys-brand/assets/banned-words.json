@@ -1,0 +1,20 @@
+{
+  "description": "Words and phrases that do not appear in Nordlys Analytics copy. The banned-words hook, the brand-assets MCP server and the brand-reviewer subagent all read this file, so there is one source of truth.",
+  "banned": [
+    "revolutionary", "game-changing", "game changer", "cutting-edge", "cutting edge",
+    "synergy", "synergies", "leverage", "unlock", "seamless", "seamlessly",
+    "next-level", "disrupt", "disruptive", "supercharge", "empower",
+    "delve", "world-class", "best-in-class", "10x", "unleash", "elevate",
+    "robust", "holistic", "paradigm", "state-of-the-art", "in today's fast-paced world"
+  ],
+  "replacements": {
+    "leverage": "use",
+    "unlock": "get",
+    "seamless": "without manual steps",
+    "empower": "let",
+    "robust": "reliable",
+    "elevate": "improve",
+    "cutting-edge": "current",
+    "world-class": "(delete, or give the evidence)"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "dev-toolkit",
+  "version": "1.0.0",
+  "description": "General coding productivity. /commit, /pr-description, /review-changes, /doctor and /setup skills, TDD guidance, code-reviewer and test-writer subagents, shell and prompt hooks (destructive-command guard, auto-format, session git context, stop-time test check), Python and TypeScript LSP servers, and Context7 plus Playwright MCP servers.",
+  "author": { "name": "Heyra", "email": "hello@heyra.io" },
+  "homepage": "https://github.com/Heyra-Global/demo-cc-marketplace/tree/main/plugins/dev-toolkit",
+  "repository": "https://github.com/Heyra-Global/demo-cc-marketplace",
+  "license": "MIT",
+  "keywords": ["git", "commit", "pull-request", "code-review", "tdd", "lsp", "mcp", "hooks", "productivity"],
+  "hooks": "./hooks/hooks.json",
+  "mcpServers": "./.mcp.json",
+  "lspServers": "./.lsp.json"
+}

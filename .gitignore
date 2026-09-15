@@ -1,0 +1,19 @@
+# Eval run artifacts (claude plugin eval writes here)
+plugins/*/evals/results/
+templates/**/evals/results/
+
+# Language tooling
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+.ruff_cache/
+
+# Local secrets and editor files
+.env
+.env.*
+.DS_Store
+Thumbs.db
+
+# Local Claude Code overrides
+.claude/settings.local.json

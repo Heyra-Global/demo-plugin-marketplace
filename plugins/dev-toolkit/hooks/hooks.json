@@ -1,0 +1,52 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/git-context.sh\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/guard-destructive.sh\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/auto-format.js\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "You decide whether Claude may end its turn. Look at the conversation so far. If Claude created or edited source code files in this session (not documentation, config or Markdown) AND did not run any test, lint, type-check or build command after the last code edit AND the user did not say that tests are unnecessary, answer {\"ok\": false, \"reason\": \"Run the project's tests or linter on the changed code before finishing, or tell the user in one sentence why they cannot be run.\"}. In every other case answer {\"ok\": true}.",
+            "model": "claude-haiku-4-5-20251001",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

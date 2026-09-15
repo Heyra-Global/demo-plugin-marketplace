@@ -1,0 +1,34 @@
+{
+  "extraKnownMarketplaces": {
+    "heyra-demo": {
+      "source": {
+        "source": "github",
+        "repo": "Heyra-Global/demo-cc-marketplace"
+      }
+    },
+    "claude-code-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-code"
+      }
+    },
+    "anthropic-agent-skills": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/skills"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "plugin-dev@claude-code-plugins": true,
+    "example-skills@anthropic-agent-skills": true
+  },
+  "permissions": {
+    "deny": [
+      "Read(.env)",
+      "Read(.env.*)",
+      "Bash(git push --force*)",
+      "Bash(git push -f*)"
+    ]
+  }
+}

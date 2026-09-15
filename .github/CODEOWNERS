@@ -1,0 +1,15 @@
+# Code owners for the heyra-demo marketplace.
+#
+# Shared infrastructure needs a review from the marketplace maintainers.
+# Individual plugins are owned by whoever added them; put their handle on the
+# plugin line when you add one.
+
+/.github/            @Alexandria-Research
+/scripts/            @Alexandria-Research
+/.claude-plugin/     @Alexandria-Research
+/templates/          @Alexandria-Research
+
+/plugins/nordlys-brand/    @Alexandria-Research
+/plugins/fabric-toolkit/   @Alexandria-Research
+/plugins/dbt-toolkit/      @Alexandria-Research
+/plugins/dev-toolkit/      @Alexandria-Research

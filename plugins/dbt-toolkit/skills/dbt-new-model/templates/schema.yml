@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: <model_name>
+    description: One row per <entity>. Grain = <entity>_id.
+    columns:
+      - name: <entity>_id
+        description: Primary key.
+        data_tests:
+          - unique
+          - not_null

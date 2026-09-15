@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "example-remote": {
+      "type": "http",
+      "url": "https://mcp.example.com/mcp",
+      "headers": {
+        "Authorization": "Bearer ${EXAMPLE_API_KEY:-}"
+      }
+    },
+    "example-local": {
+      "command": "npx",
+      "args": ["-y", "@example/mcp-server@latest"],
+      "env": {
+        "PROJECT_DIR": "${CLAUDE_PROJECT_DIR}"
+      }
+    }
+  }
+}

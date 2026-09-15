@@ -1,0 +1,28 @@
+{
+  "name": "fabric-toolkit",
+  "version": "1.0.0",
+  "description": "Microsoft Fabric data engineering. Medallion architecture and PySpark notebook skills with code templates, Fabric CLI reference, /fabric-deploy, notebook-reviewer and fabric-deployer subagents, safety hooks for destructive fab commands, the Fabric Core MCP server with Azure CLI auth, and userConfig for workspace settings.",
+  "author": { "name": "Heyra", "email": "hello@heyra.io" },
+  "homepage": "https://github.com/Heyra-Global/demo-cc-marketplace/tree/main/plugins/fabric-toolkit",
+  "repository": "https://github.com/Heyra-Global/demo-cc-marketplace",
+  "license": "MIT",
+  "keywords": ["fabric", "microsoft", "lakehouse", "pyspark", "delta", "medallion", "mcp", "hooks", "notebooks"],
+  "hooks": "./hooks/hooks.json",
+  "mcpServers": "./.mcp.json",
+  "userConfig": {
+    "workspace_name": {
+      "type": "string",
+      "title": "Fabric workspace",
+      "description": "Name of the Fabric workspace this project deploys to. Used by /fabric-deploy and shown at session start.",
+      "default": "nordlys-dev",
+      "required": false
+    },
+    "production_workspace": {
+      "type": "string",
+      "title": "Production workspace",
+      "description": "Name of the production workspace. The guard hook blocks destructive fab commands that target this workspace.",
+      "default": "nordlys-prod",
+      "required": false
+    }
+  }
+}

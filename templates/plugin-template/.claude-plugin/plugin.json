@@ -1,0 +1,10 @@
+{
+  "name": "my-plugin",
+  "version": "0.1.0",
+  "description": "One sentence that says what the plugin does and for whom. Specific, not 'a plugin for X'.",
+  "author": { "name": "Your Name", "email": "you@example.com" },
+  "license": "MIT",
+  "keywords": ["keyword-one", "keyword-two"],
+  "hooks": "./hooks/hooks.json",
+  "mcpServers": "./.mcp.json"
+}
